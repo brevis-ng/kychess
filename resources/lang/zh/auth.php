@@ -16,5 +16,6 @@ return [
     'failed' => '账号或密码错误',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'restricted' => ':ip | 您无权访问此资源。',
 
 ];
