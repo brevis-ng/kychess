@@ -24,10 +24,10 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->boolean('status')->default(true)->comment('账户状态 1:启用，0:停用');
             $table->integer('login_count')->default(0)->comment('登录次数');
-            $table->timestamp('last_login')->comment('最后登录时间');
-            $table->ipAddress('last_login_ip')->comment('最后登录ip');
-            $table->unsignedBigInteger('group_id')->comment('权限组');
-            $table->string('last_session')->comment('最后登录的session');
+            $table->timestamp('last_login')->nullable()->comment('最后登录时间');
+            $table->ipAddress('last_login_ip')->nullable()->comment('最后登录ip');
+            $table->unsignedBigInteger('group_id')->nullable()->comment('权限组');
+            $table->string('last_session')->nullable()->comment('最后登录的session');
             $table->rememberToken();
             $table->timestamps();
 
