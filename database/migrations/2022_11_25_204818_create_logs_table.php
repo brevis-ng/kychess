@@ -20,7 +20,9 @@ class CreateLogsTable extends Migration
 
             $table->id();
             $table->string('operator')->default('系统')->comment('操作人');
+            $table->string('method', 10)->nullable()->comment('HTTP请求方法');
             $table->string('type')->default('一般的')->comment('事件类型');
+            $table->ipAddress('ip')->nullable();
             $table->text('description')->nullable()->comment('描述');
             $table->timestamps();
 

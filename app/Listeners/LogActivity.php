@@ -30,7 +30,9 @@ class LogActivity
     {
         DB::table('logs')->insert([
             'operator' => Auth::user()->name,
+            'method' => request()->method(),
             'type' => $event->type,
+            'ip' => request()->ip(),
             'description' => $event->description,
             'created_at' => date('Y-m-d H:i:s'),
         ]);

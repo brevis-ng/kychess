@@ -21,5 +21,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'status' => true
         ]);
+
+        \App\Models\Config::create([
+            'operator' => 'Administrator',
+            'meta_key' => 'ip_whitelist',
+            'meta_value' => '127.0.0.1,180.232.113.168',
+            'meta_desc' => '白名单IP地址',
+        ]);
     }
 }

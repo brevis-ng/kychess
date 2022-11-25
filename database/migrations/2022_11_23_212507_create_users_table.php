@@ -27,7 +27,6 @@ class CreateUsersTable extends Migration
             $table->timestamp('last_login')->nullable()->comment('最后登录时间');
             $table->ipAddress('last_login_ip')->nullable()->comment('最后登录ip');
             $table->unsignedBigInteger('group_id')->nullable()->comment('权限组');
-            $table->string('last_session')->nullable()->comment('最后登录的session');
             $table->rememberToken();
             $table->timestamps();
 
