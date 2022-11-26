@@ -20,7 +20,7 @@ class CreateGroupsTable extends Migration
 
             $table->id();
             $table->string('name')->comment('角色名');
-            $table->string('rule_id')->comment('规则id');
+            $table->string('rules_id')->comment('规则id');
             $table->text('description')->comment('描述');
             $table->boolean('status')->default(true)->comment('状态 1:启用，0:停用');
             $table->json('menu')->comment('菜单');

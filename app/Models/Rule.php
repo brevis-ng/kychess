@@ -17,6 +17,7 @@ class Rule extends Model
     protected $fillable = [
         'name',
         'url',
+        'method',
         'pid',
         'rank',
         'status',
@@ -30,7 +31,6 @@ class Rule extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'boolean',
-        'menu' => AsArrayObject::class
+        'status' => 'boolean'
     ];
 }

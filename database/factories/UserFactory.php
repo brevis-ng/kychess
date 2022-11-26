@@ -19,7 +19,10 @@ class UserFactory extends Factory
             'name' => $this->faker->unique()->name(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'status' => $this->faker->boolean(),
-            'group_id' => $this->faker->randomDigit(),
+            'login_count' => $this->faker->random_int(1, 999),
+            'last_login' => $this->faker->dateTimeBetween('-1 month'),
+            'last_login_ip' => $this->faker->ipv4(),
+            'group_id' => 1,
             'remember_token' => Str::random(10),
         ];
     }
