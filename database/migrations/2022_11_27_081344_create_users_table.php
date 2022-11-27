@@ -25,12 +25,12 @@ class CreateUsersTable extends Migration
             $table->boolean('status')->default(true)->comment('账户状态 1:启用，0:停用');
             $table->integer('login_count')->default(0)->comment('登录次数');
             $table->timestamp('last_login')->nullable()->comment('最后登录时间');
-            $table->ipAddress('last_login_ip')->nullable()->comment('最后登录ip');
-            $table->unsignedBigInteger('group_id')->nullable()->comment('权限组');
+            $table->ipAddress('last_ip')->nullable()->comment('最后登录ip');
+            $table->unsignedBigInteger('role_id')->nullable()->comment('权限组');
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('group_id')->references('id')->on('groups')->cascadeOnUpdate()->cascadeOnDelete();
+            $table->foreign('role_id')->references('id')->on('roles')->nullOnDelete();
         });
     }
 

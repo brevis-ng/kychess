@@ -24,8 +24,8 @@ class User extends Authenticatable
         'status',
         'login_count',
         'last_login',
-        'last_login_ip',
-        'group_id',
+        'last_ip',
+        'role_id',
         'created_at',
         'updated_at'
     ];

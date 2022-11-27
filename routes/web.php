@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\RuleController;
+use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\HomeController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -28,11 +29,10 @@ Route::group([
         Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest')->name('auth.store');
 
         Route::middleware('auth')->group(function() {
-            // Route::get('/index', [AdminController::class, 'index'])->name('admin.index');
-            // Route::get('/menu', [AdminController::class, 'menu'])->name('admin.menu');
+            Route::get('dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
             Route::resource('admin', AdminController::class);
-            Route::resource('group', GroupController::class);
-            Route::resource('rules', RuleController::class);
+            Route::resource('roles', RoleController::class);
+            Route::resource('permissions', PermissionController::class);
         });
     });
 

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rule extends Model
+class Role extends Model
 {
     use HasFactory;
 
@@ -16,13 +17,10 @@ class Rule extends Model
      */
     protected $fillable = [
         'name',
-        'url',
-        'method',
-        'pid',
-        'rank',
-        'status',
+        'description',
+        'menu',
         'created_at',
-        'updated_at'
+        'updated_at',
     ];
 
     /**
@@ -31,6 +29,6 @@ class Rule extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'boolean'
+        'menu' => AsArrayObject::class
     ];
 }

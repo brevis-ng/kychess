@@ -31,7 +31,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return response()->json(['status' => 'success', 'url' => route('admin.index')]);
+        return response()->json(['status' => 'success', 'url' => route('admin.dashboard')]);
     }
 
     /**

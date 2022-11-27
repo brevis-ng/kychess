@@ -31,7 +31,7 @@ class LoginFired
             // @brevis-ng: Update this login info
             $event->user->login_count += 1;
             $event->user->last_login = date("Y-m-d H:i:s");
-            $event->user->last_login_ip = request()->ip();
+            $event->user->last_ip = request()->ip();
 
             $event->user->save();
 
