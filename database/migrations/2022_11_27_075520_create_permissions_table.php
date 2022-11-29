@@ -19,11 +19,14 @@ class CreatePermissionsTable extends Migration
             $table->collation = 'utf8mb4_unicode_ci';
 
             $table->id();
-            $table->string('name')->comment('权限名称');
-            $table->string('action')->nullable()->comment('请求方法');
-            $table->smallInteger('pid')->default(0)->comment('父id');
-            $table->tinyInteger('rank')->comment('菜单级别');
+            $table->unsignedBigInteger('pid')->default(0)->comment('父id');
+            $table->string('title')->default('')->comment('名称');
+            $table->string('icon')->default('fa fa-gears')->comment('菜单图标');
+            $table->string('href')->default('')->comment('链接');
+            $table->string('target', 20)->default('_self')->comment('链接打开方式');
+            $table->string('level', 10)->default(0)->comment('菜单排序');
             $table->boolean('status')->default(true)->comment('状态');
+            $table->string('action')->nullable()->comment('请求方法');
             $table->timestamps();
         });
     }

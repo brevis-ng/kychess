@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use function PHPSTORM_META\map;
+
 class Permission extends Model
 {
     use HasFactory;
@@ -15,11 +17,14 @@ class Permission extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'action',
         'pid',
-        'rank',
+        'title',
+        'icon',
+        'href',
+        'target',
+        'level',
         'status',
+        'action',
         'created_at',
         'updated_at'
     ];
@@ -32,4 +37,23 @@ class Permission extends Model
     protected $casts = [
         'status' => 'boolean'
     ];
+
+    /**
+     * Get the permission's title.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getTitleAttribute($value)
+    {
+        return trans('home.' . $value);
+    }
+
+    /**
+     * The roles that belong to the permission.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
 }

@@ -48,4 +48,15 @@ class User extends Authenticatable
     protected $casts = [
         'status' => 'boolean',
     ];
+
+    /**
+     * Get the user's status.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public function getStatusAttribute($value)
+    {
+        return $value ? trans('home.active') : trans('home.inactive');
+    }
 }

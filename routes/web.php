@@ -29,7 +29,10 @@ Route::group([
         Route::post('/login', [AuthenticatedSessionController::class, 'store'])->middleware('guest')->name('auth.store');
 
         Route::middleware('auth')->group(function() {
-            Route::get('dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
+            Route::get('index', [HomeController::class, 'index'])->name('home.index');
+            Route::get('dashboard', [HomeController::class, 'dashboard'])->name('home.dashboard');
+            Route::get('menu', [HomeController::class, 'menu'])->name('home.menu');
+
             Route::resource('admin', AdminController::class);
             Route::resource('roles', RoleController::class);
             Route::resource('permissions', PermissionController::class);

@@ -12,7 +12,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" href="images/favicon.ico">
+    <link rel="icon" href="{{ asset('layuimini/images/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('layuimini/lib/layui-v2.5.5/css/layui.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('layuimini/lib/font-awesome-4.7.0/css/font-awesome.min.css') }}" media="all">
     <link rel="stylesheet" href="{{ asset('layuimini/css/layuimini.css?v=2.0.6.1') }}" media="all">
@@ -37,17 +37,17 @@
             </a>
 
             <!--电脑端头部菜单-->
-            <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-menu-header-pc layuimini-pc-show">
-            </ul>
+            <!-- <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-menu-header-pc layuimini-pc-show">
+            </ul> -->
 
             <!--手机端头部菜单-->
-            <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-mobile-show">
+            <!-- <ul class="layui-nav layui-layout-left layuimini-header-menu layuimini-mobile-show">
                 <li class="layui-nav-item">
                     <a href="javascript:;"><i class="fa fa-list-ul"></i> 选择模块</a>
                     <dl class="layui-nav-child layuimini-menu-header-mobile">
                     </dl>
                 </li>
-            </ul>
+            </ul> -->
 
             <ul class="layui-nav layui-layout-right">
 
@@ -124,10 +124,10 @@
             miniAdmin = layui.miniAdmin;
 
         var options = {
-            iniUrl: "/layuimini/api/init.json",    // 初始化接口
-            clearUrl: "api/clear.json", // 缓存清理接口
-            renderPageVersion: true,    // 初始化页面是否加版本号
-            bgColorDefault: false,      // 主题默认配置
+            iniUrl: "{{ route('home.menu') }}",//"/layuimini/api/init.json",    // 初始化接口
+            clearUrl: "/layuimini/api/clear.json", // 缓存清理接口
+            renderPageVersion: false,    // 初始化页面是否加版本号
+            bgColorDefault: 3,      // 主题默认配置
             multiModule: true,          // 是否开启多模块
             menuChildOpen: false,       // 是否默认展开菜单
             loadingTime: 0,             // 初始化加载时间

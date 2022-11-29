@@ -31,4 +31,12 @@ class Role extends Model
     protected $casts = [
         'menu' => AsArrayObject::class
     ];
+
+    /**
+     * The permissons that belong to the role.
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class);
+    }
 }
