@@ -50,7 +50,21 @@
             </ul> -->
 
             <ul class="layui-nav layui-layout-right">
-
+                <li class="layui-nav-item">
+                    <a href="javascript:;">{{ LaravelLocalization::getCurrentLocaleNative() }}</a>
+                    <dl class="layui-nav-child">
+                        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+                        <dd>
+                            <a href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">
+                            {{ $properties['native'] }}
+                            @if( hash_equals(LaravelLocalization::getCurrentLocale(), $localeCode) )
+                            <i class="fa fa-check" style="color: #3ec483;"></i>
+                            @endif
+                            </a>
+                        </dd>
+                        @endforeach
+                    </dl>
+                </li>
                 <li class="layui-nav-item" lay-unselect>
                     <a href="javascript:;" data-refresh="刷新"><i class="fa fa-refresh"></i></a>
                 </li>
@@ -60,23 +74,23 @@
                 <li class="layui-nav-item mobile layui-hide-xs" lay-unselect>
                     <a href="javascript:;" data-check-screen="full"><i class="fa fa-arrows-alt"></i></a>
                 </li>
+                @auth
                 <li class="layui-nav-item layuimini-setting">
-                    <a href="javascript:;">admin</a>
+                    <a href="javascript:;">{{ Auth::user()->name }}</a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-setting.html" data-title="基本资料" data-icon="fa fa-gears">基本资料<span class="layui-badge-dot"></span></a>
-                        </dd>
-                        <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="修改密码" data-icon="fa fa-gears">修改密码</a>
+                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="{{ __('home.password.change') }}" data-icon="fa fa-gears">{{ __('home.password.change') }}<span class="layui-badge-dot"></a>
                         </dd>
                         <dd>
                             <hr>
                         </dd>
                         <dd>
-                            <a href="javascript:;" class="login-out">退出登录</a>
+                            <a href="{{ route('auth.destroy') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" class="login-out">{{ __('home.logout') }}</a>
+                            <form id="logout-form" action="{{ route('auth.destroy') }}" method="POST" style="display: none;">@csrf</form>
                         </dd>
                     </dl>
                 </li>
+                @endauth
                 <li class="layui-nav-item layuimini-select-bgcolor" lay-unselect>
                     <a href="javascript:;" data-bgcolor="配色方案"><i class="fa fa-ellipsis-v"></i></a>
                 </li>
@@ -103,9 +117,6 @@
 
         <div class="layui-card layuimini-page-header layui-hide">
             <div class="layui-breadcrumb layuimini-page-title">
-                <a lay-href="" href="/">主页</a><span lay-separator="">/</span>
-                <a><cite>常规管理</cite></a><span lay-separator="">/</span>
-                <a><cite>系统设置</cite></a>
             </div>
         </div>
 
@@ -134,12 +145,6 @@
             pageAnim: true,             // 切换菜单动画
         };
         miniAdmin.render(options);
-
-        $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'page/login-3.html';
-            });
-        });
     });
 </script>
 </body>

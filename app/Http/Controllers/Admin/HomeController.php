@@ -36,12 +36,6 @@ class HomeController extends Controller
     {
         $role = Role::find(Auth::user()->id);
         if ( $role ) {
-            // $menu = $role->menu['menuInfo'];
-            // foreach ( $menu[0]['child'] as $key => $child ) {
-            //     $role->menu['menuInfo'][0]['child'][$key]['title'] = trans('home.' . $role->menu['menuInfo'][0]['child'][$key]['title']);
-            // }
-            // dd($role->menu);
-
             return $role->menu;
         }
     }

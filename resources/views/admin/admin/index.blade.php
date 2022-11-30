@@ -29,9 +29,10 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 @can('create', App\Models\User::class)
-                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
-                @elsecan('delete', App\Models\User::class)
-                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> {{ __('home.add.title') }} </button>
+                @endcan
+                @can('delete', App\Models\User::class)
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> {{ __('home.delete.title') }} </button>
                 @endcan
             </div>
         </script>
@@ -39,8 +40,8 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">{{ __('home.edit.title') }}</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">{{ __('home.delete.title') }}</a>
         </script>
 
     </div>
@@ -64,14 +65,14 @@
             cols: [[
                 {type: "checkbox", width: 50},
                 {field: 'id', width: 60, title: 'ID', sort: true},
-                {field: 'username', width: 150, title: '用户账号'},
-                {field: 'name', width: 150, title: '用户姓名', sort: true},
-                {field: 'status', width: 100, title: '状态'},
-                {field: 'login_count', width: 150, title: '登录次数', sort: true},
-                {field: 'last_login', width: 180, title: '最后登录时间', sort: true},
-                {field: 'last_ip', width:150, title: '最后登录ip'},
-                {field: 'role_id', width: 150, title: '权限组', sort: true},
-                {title: '操作', minWidth: 50, toolbar: '#currentTableBar', align: "center"}
+                {field: 'username', width: 150, title: '{{__("home.username")}}'},
+                {field: 'name', width: 150, title: '{{__("home.name")}}', sort: true},
+                {field: 'status', width: 100, title: '{{__("home.status")}}'},
+                {field: 'login_count', width: 180, title: '{{__("home.login_count")}}', sort: true},
+                {field: 'last_login', width: 180, title: '{{__("home.last_login")}}', sort: true},
+                {field: 'last_ip', width:150, title: '{{__("home.last_ip")}}'},
+                {field: 'role_id', width: 150, title: '{{__("home.role")}}', sort: true},
+                {title: '{{__("home.action")}}', minWidth: 50, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 20, 30],
             limit: 20,
@@ -104,7 +105,7 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {   // 监听添加操作
-                var content = miniPage.getHrefContent('page/table/add.html');
+                var content = miniPage.getHrefContent('/layuimini/page/table/add.html');
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
@@ -121,15 +122,43 @@
                     layer.full(index);
                 });
             } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                var checkStatus = table.checkStatus('currentTableId');
+                var data = checkStatus.data;
+                var ids = [];
+                for(var i=0; i<data.length; i++) {
+                    ids.push(data[i]['id'])
+                }
+                layer.confirm(
+                    "{{ __('home.delete.confirm') }}",
+                    {title: "{{__('home.info')}}", btn: ["{{__('home.yes')}}", "{{__('home.cancel')}}"]},
+                    function (index) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('admin.destroy', ['admin' => 'adminId']) }}".replace('adminId', ids[0]),
+                            data: {ids: ids},
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token(); }}'
+                            },
+                            success: function (response) {
+                                if ( response.code == 200 ) {
+                                    top.layer.msg(response.msg, {icon: 6, time:2000})
+                                    layer.close(index)
+                                    location.reload();
+                                } else {
+                                    layer.msg(response.msg, {icon: 5, shift: 6, time: 2000});
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    }
+                );
             }
         });
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            // console.log(obj)
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
@@ -154,10 +183,30 @@
                 });
                 return false;
             } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
+                layer.confirm(
+                    "{{ __('home.delete.confirm') }}",
+                    {title: "{{__('home.info')}}", btn: ["{{__('home.yes')}}", "{{__('home.cancel')}}"]},
+                    function (index) {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "{{ route('admin.destroy', ['admin' => 'adminId']) }}".replace('adminId', data.id),
+                            dataType: "json",
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token(); }}'
+                            },
+                            success: function (response) {
+                                if ( response.code == 200 ) {
+                                    top.layer.msg(response.msg, {icon: 6, time:2000})
+                                    layer.close(index)
+                                    location.reload();
+                                } else {
+                                    layer.msg(response.msg, {icon: 5, shift: 6, time: 2000});
+                                }
+                            }
+                        });
+                        layer.close(index);
+                    }
+                );
             }
         });
 

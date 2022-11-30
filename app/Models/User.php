@@ -63,4 +63,6 @@ class User extends Authenticatable
     public const VIEWANY = 'admin.viewAny';
     public const VIEW = 'admin.view';
     public const CREATE = 'admin.create';
+    public const UPDATE = 'admin.update';
+    public const DESTROY = 'admin.destroy';
 }

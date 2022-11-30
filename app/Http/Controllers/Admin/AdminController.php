@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,10 @@ class AdminController extends Controller
             }
     
             $users = User::where($where)->orderBy('id')->paginate($per_page, ['*'], 'page', $current_page)->toArray();
+
+            foreach ($users['data'] as $key => $user) {
+                $users['data'][$key]['role_id'] = Role::find($user['role_id'])->name;
+            }
 
             return response()->json([
                 'code' => 0,
@@ -98,11 +103,33 @@ class AdminController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('delete', User::find($id)) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.destroy')])]);
+        }
+
+        if ( $request->filled('ids') ) {
+            $ids = $request->input('ids');
+            $count = User::destroy($ids);
+            if ( $count == 0 ) {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            } else {
+                $failed = count($ids) - $count;
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok') . " | $count success $failed failed"]);
+            }
+        } else {
+            $count = User::destroy($id);
+            
+            if ( $count == 1 ) {
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok')]);
+            } else {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            }
+        }
     }
 }

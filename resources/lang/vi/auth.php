@@ -14,7 +14,6 @@ return [
     */
 
     'failed' => 'Thông tin đăng nhập không chính xác.',
-    'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'restricted' => ':ip | Bạn không có quyền truy cập tài nguyên này.',
 

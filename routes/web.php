@@ -39,12 +39,20 @@ Route::group([
         });
     });
 
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->middleware('auth')
+        ->name('auth.destroy');
 });
 
-Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('auth.destroy');
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    $user_has_permissions = [];
+
+    $permissions = \App\Models\Role::find(1)->permissions;
+    foreach ( $permissions as $permission ) {
+        $user_has_permissions[] = $permission['action'];
+    }
+
+    return in_array(\App\Models\User::CREATE, $user_has_permissions);
 });

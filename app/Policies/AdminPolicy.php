@@ -18,7 +18,7 @@ class AdminPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -30,7 +30,7 @@ class AdminPolicy
      */
     public function view(User $user, User $model)
     {
-        //
+        return true;
     }
 
     /**
@@ -69,12 +69,21 @@ class AdminPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\User|null  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, User $model = null)
     {
-        return false;
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(User::DESTROY, $user_has_permissions);
+        }
     }
 
     /**
