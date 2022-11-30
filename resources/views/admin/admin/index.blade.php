@@ -2,24 +2,24 @@
     <div class="layuimini-main">
 
         <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
+            <legend>{{ __('home.search_title') }}</legend>
             <div style="margin: 10px 10px 10px 10px">
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户账号</label>
+                            <label class="layui-form-label">{{ __('home.username') }}</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <label class="layui-form-label">用户姓名</label>
+                            <label class="layui-form-label">{{ __('home.name') }}</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="name" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i>{{ __('home.search') }}</button>
                         </div>
                     </div>
                 </form>
@@ -28,8 +28,11 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
+                @can('create', App\Models\User::class)
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
+                @elsecan('delete', App\Models\User::class)
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
+                @endcan
             </div>
         </script>
 

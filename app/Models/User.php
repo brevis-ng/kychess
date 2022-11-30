@@ -59,4 +59,8 @@ class User extends Authenticatable
     {
         return $value ? trans('home.active') : trans('home.inactive');
     }
+
+    public const VIEWANY = 'admin.viewAny';
+    public const VIEW = 'admin.view';
+    public const CREATE = 'admin.create';
 }

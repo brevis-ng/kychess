@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -40,7 +41,16 @@ class AdminPolicy
      */
     public function create(User $user)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(User::CREATE, $user_has_permissions);
+        }
     }
 
     /**
@@ -64,7 +74,7 @@ class AdminPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return false;
     }
 
     /**
