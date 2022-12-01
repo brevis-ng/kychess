@@ -32,15 +32,14 @@ return [
     'inactive' => 'Vô hiệu hoá',
     'menu' => 'Menu',
     'manager' => 'Cài đặt quản lý',
-    'password' => [
-        'change' => 'Đổi mật khẩu',
-    ],
+    'password_change' => 'Đổi mật khẩu',
+    'password' => 'Mật khẩu',
     'logout' => 'Đăng xuất',
     'logout_ok' => 'Đắng xuất thành công',
     'search' => 'Tìm',
     'search_title' => 'Tìm kiếm nhanh',
-    'username' => 'Username',
-    'name' => 'Tài khoản',
+    'username' => 'Tên đăng nhập',
+    'name' => 'Tên gọi',
     'login_count' => 'Số lần đăng nhập',
     'last_login' => 'Lần đăng nhập cuối',
     'last_ip' => 'IP Đăng nhập',
@@ -68,6 +67,7 @@ return [
         'confirm' => 'Bạn có chắc chắn muốn xoá?',
         'ok' => 'Xoá thành công',
         'no' => 'Xoá thất bại',
-    ]
+    ],
+    'save' => 'Lưu thay đổi',
 
 ];

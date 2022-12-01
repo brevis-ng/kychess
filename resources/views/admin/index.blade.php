@@ -79,7 +79,7 @@
                     <a href="javascript:;">{{ Auth::user()->name }}</a>
                     <dl class="layui-nav-child">
                         <dd>
-                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="{{ __('home.password.change') }}" data-icon="fa fa-gears">{{ __('home.password.change') }}<span class="layui-badge-dot"></a>
+                            <a href="javascript:;" layuimini-content-href="page/user-password.html" data-title="{{ __('home.password_change') }}" data-icon="fa fa-gears">{{ __('home.password_change') }}<span class="layui-badge-dot"></a>
                         </dd>
                         <dd>
                             <hr>

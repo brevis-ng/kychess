@@ -31,9 +31,8 @@ return [
     'active' => '启用',
     'inactive' => '禁用',
     'manager' => '管理设置',
-    'password' => [
-        'change' => '修改密码',
-    ],
+    'password_change' => '修改密码',
+    'password' => '密码',
     'logout' => '退出登录',
     'logout_ok' => '退出登录成功',
     'search' => '搜索',
@@ -67,6 +66,7 @@ return [
         'confirm' => '真的删除行么？',
         'ok' => '删除成功',
         'no' => '删除失败',
-    ]
+    ],
+    'save' => '确认保存',
 
 ];

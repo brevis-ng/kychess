@@ -105,11 +105,11 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {   // 监听添加操作
-                var content = miniPage.getHrefContent('/layuimini/page/table/add.html');
+                var content = miniPage.getHrefContent("{{ route('admin.create') }}");
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
-                    title: '添加用户',
+                    title: "{{ __('home.admin.create') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
@@ -142,7 +142,7 @@
                             },
                             success: function (response) {
                                 if ( response.code == 200 ) {
-                                    top.layer.msg(response.msg, {icon: 6, time:2000})
+                                    layer.msg(response.msg, {icon: 6, time:2000})
                                     layer.close(index)
                                     location.reload();
                                 } else {

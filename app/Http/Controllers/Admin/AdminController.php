@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -48,11 +49,16 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request  $request)
     {
-        //
+        if ( $request->user()->cannot('create', User::class) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+        }
+
+        return view('admin.admin.create', ['roles' => Role::all()]);
     }
 
     /**
@@ -63,7 +69,22 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ( $request->user()->cannot('create', User::class) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+        }
+
+        $validated = $request->validate([
+            'username' => ['required', 'unique:users', 'min:5'],
+            'name' => ['required'],
+            'password' => ['required', 'min:6'],
+            'role_id' => ['exists:roles,id']
+        ]);
+
+        $request->has('status') ? $validated['status'] = true : $validated['status'] = false;
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
     }
 
     /**
