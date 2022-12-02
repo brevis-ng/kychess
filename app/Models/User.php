@@ -49,17 +49,6 @@ class User extends Authenticatable
         'status' => 'boolean',
     ];
 
-    /**
-     * Get the user's status.
-     *
-     * @param  string  $value
-     * @return string
-     */
-    public function getStatusAttribute($value)
-    {
-        return $value ? trans('home.active') : trans('home.inactive');
-    }
-
     public const VIEWANY = 'admin.viewAny';
     public const VIEW = 'admin.view';
     public const CREATE = 'admin.create';

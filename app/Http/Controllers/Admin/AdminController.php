@@ -7,6 +7,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class AdminController extends Controller
 {
@@ -85,6 +86,12 @@ class AdminController extends Controller
         $validated['password'] = Hash::make($validated['password']);
 
         $user = User::create($validated);
+
+        if ( $user ) {
+            return response()->json(['code' => 200, 'msg' => trans('home.add.ok')]);
+        } else {
+            return response()->json(['code' => 400, 'msg' => trans('home.add.no')]);
+        }
     }
 
     /**
@@ -101,12 +108,20 @@ class AdminController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request  $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', User::find($id)) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+        }
+
+        $user = User::find($id);
+        $roles = Role::all();
+
+        return view('admin.admin.edit', ['user' => $user, 'roles' => $roles]);
     }
 
     /**
@@ -118,7 +133,29 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', User::find($id)) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+        }
+
+        $validated = $request->validate([
+            'username' => ['required', Rule::unique('users')->ignore($id), 'min:5'],
+            'name' => ['required'],
+            'password' => ['required', 'min:6'],
+            'role_id' => ['exists:roles,id']
+        ]);
+
+        $request->filled('status') ? $validated['status'] = true : $validated['status'] = false;
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $count = User::find($id)->update($validated);
+
+        if ( $count == 1 ) {
+            return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
+        } else {
+            return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+        }
+
     }
 
     /**

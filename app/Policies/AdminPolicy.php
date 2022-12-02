@@ -62,7 +62,16 @@ class AdminPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(User::UPDATE, $user_has_permissions);
+        }
     }
 
     /**

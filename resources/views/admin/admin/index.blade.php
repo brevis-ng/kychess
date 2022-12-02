@@ -43,6 +43,13 @@
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">{{ __('home.edit.title') }}</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">{{ __('home.delete.title') }}</a>
         </script>
+        <script type="text/html" id="statusTpl">
+            @{{#  if(d.status){ }}
+              <a href="javascript:;" style="color: #5FB878;" lay-event="chgstatus">{{ __('home.active') }}</a>
+            @{{#  } else { }}
+              <a href="javascript:;" style="color: #FF5722;" lay-event="chgstatus">{{ __('home.inactive') }}</a>
+            @{{#  } }}
+        </script>
 
     </div>
 </div>
@@ -67,7 +74,7 @@
                 {field: 'id', width: 60, title: 'ID', sort: true},
                 {field: 'username', width: 150, title: '{{__("home.username")}}'},
                 {field: 'name', width: 150, title: '{{__("home.name")}}', sort: true},
-                {field: 'status', width: 100, title: '{{__("home.status")}}'},
+                {field: 'status', width: 150, title: '{{__("home.status")}}', templet: '#statusTpl'},
                 {field: 'login_count', width: 180, title: '{{__("home.login_count")}}', sort: true},
                 {field: 'last_login', width: 180, title: '{{__("home.last_login")}}', sort: true},
                 {field: 'last_ip', width:150, title: '{{__("home.last_ip")}}'},
@@ -83,10 +90,6 @@
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
             var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
             //执行搜索重载
             table.reload('currentTableId', {
                 page: {
@@ -165,11 +168,11 @@
             var data = obj.data;
             if (obj.event === 'edit') {
 
-                var content = miniPage.getHrefContent('page/table/add.html');
+                var content = miniPage.getHrefContent("{{ route('admin.edit', ['admin' => 'adminId']) }}".replace('adminId', data.id));
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: "{{ __('home.admin.edit') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
