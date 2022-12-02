@@ -84,7 +84,6 @@
             limits: [10, 20, 30],
             limit: 20,
             page: true,
-            skin: 'line'
         });
 
         // 监听搜索操作

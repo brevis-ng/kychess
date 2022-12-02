@@ -18,7 +18,16 @@ class AdminPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(User::VIEWANY, $user_has_permissions);
+        }
     }
 
     /**
@@ -30,7 +39,16 @@ class AdminPolicy
      */
     public function view(User $user, User $model)
     {
-        return true;
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(User::VIEW, $user_has_permissions);
+        }
     }
 
     /**

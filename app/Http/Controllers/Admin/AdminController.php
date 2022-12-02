@@ -19,6 +19,10 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
+        if ( $request->user()->cannot('viewAny', User::class) ) {
+            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+        }
+
         if ( $request->has('type') && hash_equals('menu', $request->query('type'))) {
             $current_page = $request->filled('page') ? intval($request->input('page')) : 1;
             $per_page = $request->filled('limit') ? intval($request->input('limit')) : 20;
@@ -53,10 +57,10 @@ class AdminController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request  $request)
+    public function create(Request $request)
     {
         if ( $request->user()->cannot('create', User::class) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
         }
 
         return view('admin.admin.create', ['roles' => Role::all()]);
@@ -71,7 +75,7 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         if ( $request->user()->cannot('create', User::class) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
         }
 
         $validated = $request->validate([
@@ -112,10 +116,10 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request  $request, $id)
+    public function edit(Request $request, $id)
     {
         if ( $request->user()->cannot('update', User::find($id)) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
         }
 
         $user = User::find($id);
@@ -134,7 +138,7 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         if ( $request->user()->cannot('update', User::find($id)) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
         }
 
         $validated = $request->validate([
@@ -155,7 +159,6 @@ class AdminController extends Controller
         } else {
             return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
         }
-
     }
 
     /**
@@ -168,7 +171,7 @@ class AdminController extends Controller
     public function destroy(Request $request, $id)
     {
         if ( $request->user()->cannot('delete', User::find($id)) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.destroy')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.destroy')])]);
         }
 
         if ( $request->filled('ids') ) {

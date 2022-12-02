@@ -1,5 +1,4 @@
 <div class="layuimini-main">
-
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
             <label class="layui-form-label required">{{ __('home.username') }}</label>
