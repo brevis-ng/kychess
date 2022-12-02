@@ -56,4 +56,10 @@ class Permission extends Model
     {
         return $this->belongsToMany(Role::class);
     }
+
+    public const VIEWANY = 'permission.viewAny';
+    public const VIEW = 'permission.view';
+    public const CREATE = 'permission.create';
+    public const UPDATE = 'permission.update';
+    public const DESTROY = 'permission.destroy';
 }
