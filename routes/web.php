@@ -46,13 +46,5 @@ Route::group([
 
 
 Route::get('/', function () {
-    // return view('welcome');
-    $user_has_permissions = [];
-
-    $permissions = \App\Models\Role::find(1)->permissions;
-    foreach ( $permissions as $permission ) {
-        $user_has_permissions[] = $permission['action'];
-    }
-
-    return in_array(\App\Models\User::CREATE, $user_has_permissions);
+    return view('welcome');
 });

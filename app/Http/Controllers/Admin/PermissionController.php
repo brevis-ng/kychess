@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Events\OnChanged;
+use App\Events\OnMenuChanged;
 use App\Http\Controllers\Controller;
 use App\Models\Permission;
 use App\Models\User;
@@ -27,6 +28,11 @@ class PermissionController extends Controller
             $per_page = $request->filled('limit') ? intval($request->input('limit')) : 20;
     
             $permission = Permission::paginate($per_page, ['*'], 'page', $current_page)->toArray();
+
+            // Translate title: Dont use Accessor cause conflic to menu remake event
+            foreach ( $permission['data'] as &$record ) {
+                $record['title'] = trans('home.' . $record['title']);
+            }
 
             return response()->json([
                 'code' => 0,
@@ -153,6 +159,8 @@ class PermissionController extends Controller
 
         if ( $count == 1 ) {
             event(new OnChanged('update', "Update permission id [$id]"));
+            event(new OnMenuChanged($id) );
+
             return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
         } else {
             return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);

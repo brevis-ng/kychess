@@ -31,16 +31,16 @@ class DatabaseSeeder extends Seeder
             ['pid' => 3, 'title' => 'admin.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'admin.destroy', 'created_at' => now()],
 
             ['pid' => 2, 'title' => 'roles.index', 'icon' => 'fa fa-group', 'href' => route('roles.index'), 'level' => 1, 'action' => 'roles.viewAny', 'created_at' => now()],
-            ['pid' => 10, 'title' => 'roles.show', 'icon' => 'fa fa-eye', 'href' => '', 'level' => 2, 'action' => 'roles.view', 'created_at' => now()],
-            ['pid' => 10, 'title' => 'roles.create', 'icon' => 'fa fa-user-plus', 'href' => '', 'level' => 2, 'action' => 'roles.create', 'created_at' => now()],
-            ['pid' => 10, 'title' => 'roles.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'roles.update', 'created_at' => now()],
-            ['pid' => 10, 'title' => 'roles.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'roles.destroy', 'created_at' => now()],
+            ['pid' => 8, 'title' => 'roles.show', 'icon' => 'fa fa-eye', 'href' => '', 'level' => 2, 'action' => 'roles.view', 'created_at' => now()],
+            ['pid' => 8, 'title' => 'roles.create', 'icon' => 'fa fa-user-plus', 'href' => '', 'level' => 2, 'action' => 'roles.create', 'created_at' => now()],
+            ['pid' => 8, 'title' => 'roles.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'roles.update', 'created_at' => now()],
+            ['pid' => 8, 'title' => 'roles.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'roles.destroy', 'created_at' => now()],
 
             ['pid' => 2, 'title' => 'permission.index', 'icon' => 'fa fa-gavel', 'href' => route('permissions.index'), 'level' => 1, 'action' => 'permission.viewAny', 'created_at' => now()],
-            ['pid' => 17, 'title' => 'permission.show', 'icon' => 'fa fa-eye', 'href' => '', 'level' => 2, 'action' => 'permission.view', 'created_at' => now()],
-            ['pid' => 17, 'title' => 'permission.create', 'icon' => 'fa fa-plus', 'href' => '', 'level' => 2, 'action' => 'permission.create', 'created_at' => now()],
-            ['pid' => 17, 'title' => 'permission.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'permission.update', 'created_at' => now()],
-            ['pid' => 17, 'title' => 'permission.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'permission.destroy', 'created_at' => now()],
+            ['pid' => 13, 'title' => 'permission.show', 'icon' => 'fa fa-eye', 'href' => '', 'level' => 2, 'action' => 'permission.view', 'created_at' => now()],
+            ['pid' => 13, 'title' => 'permission.create', 'icon' => 'fa fa-plus', 'href' => '', 'level' => 2, 'action' => 'permission.create', 'created_at' => now()],
+            ['pid' => 13, 'title' => 'permission.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'permission.update', 'created_at' => now()],
+            ['pid' => 13, 'title' => 'permission.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'permission.destroy', 'created_at' => now()],
         ]);
 
         // Role

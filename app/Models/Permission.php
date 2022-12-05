@@ -44,10 +44,10 @@ class Permission extends Model
      * @param  string  $value
      * @return string
      */
-    public function getTitleAttribute($value)
-    {
-        return trans('home.' . $value);
-    }
+    // public function getTitleAttribute($value)
+    // {
+    //     return trans('home.' . $value);
+    // }
 
     /**
      * The roles that belong to the permission.

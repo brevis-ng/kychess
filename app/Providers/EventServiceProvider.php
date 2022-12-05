@@ -7,6 +7,7 @@ use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Event;
 use \App\Events\OnChanged;
+use App\Events\OnMenuChanged;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -26,6 +27,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         \Illuminate\Auth\Events\Login::class => [
             \App\Listeners\LoginFired::class
+        ],
+        OnMenuChanged::class => [
+            \App\Listeners\MenuFired::class
         ]
     ];
 
