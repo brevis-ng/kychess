@@ -39,10 +39,8 @@
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">{{ __('home.edit.title') }}</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">{{ __('home.delete.title') }}</a>
-        </script>
+        <x-action-button :model="App\Models\User::class" ></x-action-button>
+
         <script type="text/html" id="statusTpl">
             @{{#  if(d.status){ }}
               <a href="javascript:;" style="color: #5FB878;" lay-event="chgstatus">{{ __('home.active') }}</a>

@@ -13,10 +13,8 @@
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">{{ __('home.edit.title') }}</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">{{ __('home.delete.title') }}</a>
-        </script>
+        <x-action-button :model="App\Models\Permission::class" ></x-action-button>
+
         <script type="text/html" id="statusTpl">
             @{{#  if(d.status){ }}
             <span style="color: #5FB878;">{{ __('home.active') }}</span>
@@ -117,11 +115,6 @@
                     }
                 );
             }
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            // console.log(obj)
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
