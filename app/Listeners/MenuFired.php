@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\OnMenuChanged;
 use App\Models\Permission;
+use App\Models\Role;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -27,8 +28,8 @@ class MenuFired
      */
     public function handle(OnMenuChanged $event)
     {
-        $roles = Permission::find($event->permission_id)->roles;
-        foreach ( $roles as $role ) {
+        foreach ( $event->role_ids as $id ) {
+            $role = Role::find($id);
             $new_menu = $role->menu;
 
             $columns = ['permissions.id', 'pid', 'title', 'icon', 'href', 'target'];

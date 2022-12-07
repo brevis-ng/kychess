@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\Permission;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -15,31 +16,38 @@ class OnMenuChanged
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * The id of permission be changed
+     * The affected roles
      * 
-     * @var int|null
+     * @var array|null $role_ids
      */
-    public $permission_id;
-
-    /**
-     * The id of role be changed
-     * 
-     * @var int|null
-     */
-    public $role_id;
+    public $role_ids;
 
     /**
      * Create a new event instance.
      *
-     * @param int|null $permission_id
-     * @param int|null $role_id
+     * @param int|array|null $permission_ids
+     * @param int|array|null $role_ids
      * 
      * @return void
      */
-    public function __construct($permission_id = null, $role_id = null)
+    public function __construct($permission_ids, $role_ids)
     {
-        $this->permission_id = $permission_id;
-        $this->role_id = $role_id;
+        if ( $permission_ids ) {
+            $ids = is_array($permission_ids) ? $permission_ids : [$permission_ids];
+
+            $records = Permission::whereIn('id', $ids)->whereIn('pid', $ids, 'or')->pluck('id')->toArray();
+            $records = Permission::whereIn('id', $records)->whereIn('pid', $records, 'or')->get();
+
+            foreach ( $records as $record ) {
+                if ( $record->level < 1 ) { continue; }
+                foreach ( $record->roles()->pluck('roles.id')->toArray() as $id ) {
+                    if ( in_array($id, $this->role_ids) ) { continue; }
+                    $this->role_ids[] = $id;
+                }
+            }
+        } elseif ( $role_ids ) {
+            $this->role_ids = is_array($role_ids) ? $role_ids : [$role_ids];
+        }
     }
 
     /**
