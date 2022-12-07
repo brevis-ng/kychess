@@ -89,10 +89,8 @@ class RoleController extends Controller
         ]);
 
         if ( $role ) {
-            $role->permissions()->attach(
-                explode(',', $validated['permission_ids']),
-                ['created_at' => now(), 'updated_at' => now()]
-            );
+            $permission_ids = explode(',', $validated['permission_ids']);
+            $role->permissions()->attach($permission_ids, ['created_at' => now(), 'updated_at' => now()]);
     
             event(new OnChanged('create', "Create role id [$role->id]"));
             event(new OnMenuChanged(null, $role->id));
@@ -117,12 +115,28 @@ class RoleController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', Role::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.roles.edit')])]);
+        }
+
+        $role = Role::find($id);
+
+        $permissions = Permission::where('status', true)->where('pid', 0)->get()->toArray();
+
+        $belongto_role = $role->permissions()->pluck('permissions.id')->toArray();
+        $tree_data = $this->treeable($permissions, $belongto_role);
+        $tree_data = json_encode($tree_data);
+
+        return view('admin.role.edit', [
+            'role' => $role,
+            'tree_data' => $tree_data
+        ]);
     }
 
     /**
@@ -134,7 +148,28 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', Role::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.roles.edit')])]);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'description' => 'nullable|string',
+            'permission_ids' => 'required',
+            'menu_ids' => 'required',
+        ]);
+
+        if ( $role = Role::find($id) ) {
+            $permission_ids = explode(',', $validated['permission_ids']);
+            $role->permissions()->syncWithPivotValues($permission_ids, ['created_at' => now(), 'updated_at' => now()]);
+
+            event(new OnChanged('create', "Edit role id [$role->id]"));
+            event(new OnMenuChanged(null, $role->id));
+
+            return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
+        } else {
+            return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+        }
     }
 
     /**
@@ -160,7 +195,7 @@ class RoleController extends Controller
                 return response()->json(['code' => 200, 'msg' => trans('home.delete.ok') . " | $count success $failed failed"]);
             }
         } else {
-            $count = Permission::destroy($id);
+            $count = Role::destroy($id);
             
             if ( $count == 1 ) {
                 return response()->json(['code' => 200, 'msg' => trans('home.delete.ok')]);
@@ -176,7 +211,7 @@ class RoleController extends Controller
      * @param array $permissions
      * @param array $belongto_user
      */
-    protected function treeable($permissions, $belongto_user)
+    protected function treeable($permissions, $belongto_role)
     {
         $treeable=[];
         $i = 0;
@@ -189,7 +224,7 @@ class RoleController extends Controller
                 'level' => $permission['level'],
             ];
 
-            if ( $permission['level'] == 2 && in_array($permission['id'], $belongto_user) ) {
+            if ( $permission['level'] == 2 && in_array($permission['id'], $belongto_role) ) {
                 $treeable[$i]['checked'] = true;
             } else {
                 $treeable[$i]['checked'] = false;
@@ -198,7 +233,7 @@ class RoleController extends Controller
             $childrens = Permission::where('pid', $permission['id'])->where('status', true)->get()->toArray();
 
             if ( ! empty($childrens) && is_array($childrens) ) {
-                $treeable[$i]['children'] = $this->treeable($childrens, $belongto_user);
+                $treeable[$i]['children'] = $this->treeable($childrens, $belongto_role);
             }
             $i += 1;
         }

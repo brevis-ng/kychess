@@ -1,63 +1,26 @@
 <div class="layuimini-main">
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
-            <label class="layui-form-label required">{{ __('home.permission.pid') }}</label>
+            <label class="layui-form-label required">{{ __('home.roles.name') }}</label>
             <div class="layui-input-block">
-                <select name="pid">
-                    <option value=""></option>
-                    @foreach($permissions as $p)
-                        <option value="{{ $p->id }}" @if($p->id == $permission->pid) selected @endif>{{ $p->title }}</option>
-                    @endforeach
-                </select>
+                <input type="text" name="name" lay-verify="required" class="layui-input"
+                lay-reqtext="{{ __('validation.required', ['attribute' => __('home.roles.name')]) }}"
+                placeholder="{{ __('home.roles.name') }}"
+                value="{{ $role->name }}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label required">{{ __('home.permission.title') }}</label>
+            <label class="layui-form-label">{{ __('home.roles.desc') }}</label>
             <div class="layui-input-block">
-                <input type="text" name="title" lay-verify="required" class="layui-input"
-                lay-reqtext="{{ __('validation.required', ['attribute' => __('home.permission.title')]) }}"
-                placeholder="{{ __('home.permission.title') }}"
-                value="{{ $permission->title }}">
+                <input type="text" name="description" class="layui-input"
+                placeholder="{{ __('home.roles.desc') }}"
+                value="{{ $role->description }}">
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">{{ __('home.permission.href') }}</label>
+            <label class="layui-form-label required">{{ __('home.roles.permission') }}</label>
             <div class="layui-input-block">
-                <input type="text" name="href" class="layui-input"
-                placeholder="{{ __('home.permission.href') }}"
-                value="{{ $permission->href }}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">{{ __('home.permission.icon') }}</label>
-            <div class="layui-input-block">
-                <input type="text" name="icon" id="iconPicker" lay-filter="iconPicker" class="hide">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">{{ __('home.permission.level') }}</label>
-            <div class="layui-input-block">
-                <input type="number" name="level" lay-verify="required" class="layui-input"
-                lay-reqtext="{{ __('validation.required', ['attribute' => __('home.permission.level')]) }}"
-                placeholder="{{ __('home.permission.level') }}"
-                value="{{ $permission->level }}">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">{{ __('home.status') }}</label>
-            <div class="layui-input-block">
-                <input type="checkbox" name="status" lay-skin="switch"
-                lay-text="{{ __('home.active') }}|{{ __('home.inactive') }}"
-                @if($permission->status) checked @endif>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">{{ __('home.action') }}</label>
-            <div class="layui-input-block">
-                <input type="text" name="action" lay-verify="required" class="layui-input"
-                lay-reqtext="{{ __('validation.required', ['attribute' => __('home.action')]) }}"
-                placeholder="{{ __('home.action') }}"
-                value="{{ $permission->action }}">
+                <div id="tree"></div>
             </div>
         </div>
 
@@ -69,27 +32,10 @@
     </div>
 </div>
 <script>
-    layui.use(['form', 'table', 'iconPickerFa'], function () {
+    layui.use(['form', 'tree'], function () {
         var form = layui.form,
-            layer = layui.layer,
-            table = layui.table,
-            iconPickerFa = layui.iconPickerFa,
+            tree = layui.tree,
             $ = layui.$;
-        
-        // Icon
-        iconPickerFa.render({
-            elem: '#iconPicker',
-            url: "{{ asset('layuimini/lib/font-awesome-4.7.0/less/variables.less') }}",
-            search: true,
-            page: false,
-            click: function (data) {
-                console.log(data);
-            },
-            success: function (d) {
-                console.log(d);
-            }
-        });
-        iconPickerFa.checkIcon('iconPicker', '{{ $permission->icon }}');
 
         /**
          * 初始化表单，要加上，不然刷新部分组件可能会不加载
@@ -99,14 +45,29 @@
         var parentIndex = layer.index;
         //监听提交
         form.on('submit(saveBtn)', function (data) {
+            var permissions = [];
+            var menu = [];
             var index = layer.alert(
                 "{{ __('home.edit.confirm') }}",
                 {title: "{{ __('home.info') }}", btn: ["{{__('home.yes')}}", "{{__('home.cancel')}}"]},
                 function () {
+                    getChecked(tree.getChecked('permissionId'), item => {
+                        if(!item['children'] || item['level'] == 1) {
+                            permissions.push(item.id); 
+                        }
+                        if(item['level'] < 2) {
+                            menu.push(item.id)
+                        }
+                    });
                     $.ajax({
-                        url: "{{ route('permissions.update', ['permission' => 'id']) }}".replace('id', "{{ $permission->id }}"),
+                        url: "{{ route('roles.update', ['role' => 'roleId']) }}".replace('roleId', "{{ $role->id }}"),
                         type: 'PUT',
-                        data: data.field,
+                        data: {
+                            "name" : data.field['name'],
+                            "description" : data.field['description'],
+                            "permission_ids" : permissions.join(','),
+                            "menu_ids" : menu.join(','),
+                        },
                         dataType: 'json',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -139,5 +100,24 @@
             );
             return false;
         });
+
+        // Permission Tree
+        tree.render({
+            elem: '#tree',
+            data: JSON.parse('{!! $tree_data !!}'),
+            showCheckbox: true,
+            id: 'permissionId',
+        });
+
+        // Get checked permission
+        function getChecked(jsonObj, callbackFunc) {
+            if (!jsonObj) return;
+            jsonObj.forEach(child => {
+                callbackFunc(child);
+                if (child.children) {
+                    getChecked(child.children, callbackFunc);
+                }
+            });
+        };
     });
 </script>

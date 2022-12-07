@@ -120,7 +120,7 @@ class PermissionController extends Controller
     public function edit(Request $request, $id)
     {
         if ( $request->user()->cannot('update', Permission::find($id)) ) {
-            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.permission.edit')])]);
         }
 
         $permission = Permission::find($id);

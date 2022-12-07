@@ -46,5 +46,10 @@ Route::group([
 
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    $role = \App\Models\Role::find(1);
+
+    $belongto_role = $role->permissions()->pluck('permissions.id')->toArray();
+
+    dd($belongto_role);
 });

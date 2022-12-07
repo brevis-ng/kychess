@@ -108,11 +108,11 @@
             var data = obj.data;
             if (obj.event === 'edit') {
 
-                var content = miniPage.getHrefContent("{{ route('permissions.edit', ['permission' => 'id']) }}".replace('id', data.id));
+                var content = miniPage.getHrefContent("{{ route('roles.edit', ['role' => 'roleId']) }}".replace('roleId', data.id));
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
-                    title: "{{ __('home.permission.edit') }}",
+                    title: "{{ __('home.roles.edit') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
