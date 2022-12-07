@@ -37,6 +37,13 @@ class HomeController extends Controller
         $role = Role::find(Auth::user()->role_id);
         if ( $role ) {
             return $role->menu;
+        } else {
+            $dummy = [
+                'homeInfo' => ['title' => '首页', 'href' => route('home.dashboard')],
+                'logoInfo' => ['title' => '后台', 'image' => '/layuimini/images/logo.png'],
+                'menuInfo' => [],
+            ];
+            return json_encode($dummy);
         }
     }
 }

@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         if ( $request->user()->cannot('viewAny', User::class) ) {
-            return response()->json(['code' => 403, 'msg' => trans('home.cannot', ['permission' => trans('home.admin.create')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.show')])]);
         }
 
         if ( $request->has('type') && hash_equals('menu', $request->query('type'))) {
