@@ -34,7 +34,7 @@ class HomeController extends Controller
      */
     public function menu()
     {
-        $role = Role::find(Auth::user()->id);
+        $role = Role::find(Auth::user()->role_id);
         if ( $role ) {
             return $role->menu;
         }
