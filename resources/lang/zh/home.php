@@ -29,6 +29,9 @@ return [
         'edit' => '角色组编辑',
         'update' => '角色组编辑',
         'destroy' => '角色组删除',
+        'name' => '角色名',
+        'desc' => '描述',
+        'permission' => '权限树',
     ],
     'permission' => [
         'index' => '权限设置',
@@ -85,5 +88,8 @@ return [
         'no' => '删除失败',
     ],
     'save' => '确认保存',
+    'created_at' => '创建时间',
+    'updated_at' => '更新时间',
+    'not_selected' => '您还没有选择任何内容。',
 
 ];

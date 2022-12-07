@@ -18,7 +18,16 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Role::VIEWANY, $user_has_permissions);
+        }
     }
 
     /**
@@ -30,7 +39,16 @@ class RolePolicy
      */
     public function view(User $user, Role $role)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Role::VIEW, $user_has_permissions);
+        }
     }
 
     /**
@@ -41,31 +59,58 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Role::CREATE, $user_has_permissions);
+        }
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Role|null  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user, Role $role = null)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Role::UPDATE, $user_has_permissions);
+        }
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Role  $role
+     * @param  \App\Models\Role|null  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user, Role $role = null)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Role::DESTROY, $user_has_permissions);
+        }
     }
 
     /**

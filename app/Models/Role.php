@@ -29,7 +29,9 @@ class Role extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'menu' => AsArrayObject::class
+        'menu' => AsArrayObject::class,
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**
@@ -66,4 +68,10 @@ class Role extends Model
 
         return $value;
     }
+
+    public const VIEWANY = 'roles.viewAny';
+    public const VIEW = 'roles.view';
+    public const CREATE = 'roles.create';
+    public const UPDATE = 'roles.update';
+    public const DESTROY = 'roles.destroy';
 }

@@ -75,10 +75,10 @@ class AdminPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\User  $model
+     * @param  \App\Models\User|null  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user, User $model = null)
     {
         if ( $user->role_id ) {
             $user_has_permissions = [];

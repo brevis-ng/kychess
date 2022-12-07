@@ -83,13 +83,16 @@ class PermissionController extends Controller
 
         $validated['status'] = $request->input('status', 'off') == 'on' ? true : false;
 
-        $request->has('icon') ? $validated['icon'] = 'fa ' . $request->input('icon') : null;
+        $request->filled('icon') ? $validated['icon'] = 'fa ' . $request->input('icon') : 'fa fa-gears';
 
-        $request->has('href') ? $validated['href'] = $request->input('href') : '';
+        $request->filled('href') ? $validated['href'] = $request->input('href') : '';
 
         $permission = Permission::create($validated);
 
         if ( $permission ) {
+            event(new OnChanged('create', "Create permission id [$permission->id]"));
+            event(new OnMenuChanged($permission->id, null) );
+
             return response()->json(['code' => 200, 'msg' => trans('home.add.ok')]);
         } else {
             return response()->json(['code' => 400, 'msg' => trans('home.add.no')]);
@@ -139,7 +142,7 @@ class PermissionController extends Controller
     public function update(Request $request, $id)
     {
         if ( $request->user()->cannot('update', Permission::find($id)) ) {
-            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.admin.edit')])]);
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.permission.edit')])]);
         }
 
         $validated = $request->validate([
@@ -151,15 +154,15 @@ class PermissionController extends Controller
 
         $validated['status'] = $request->input('status', 'off') == 'on' ? true : false;
 
-        $request->has('icon') ? $validated['icon'] = 'fa ' . $request->input('icon') : null;
+        $request->filled('icon') ? $validated['icon'] = 'fa ' . $request->input('icon') : null;
 
-        $request->has('href') ? $validated['href'] = $request->input('href') : '';
+        $request->filled('href') ? $validated['href'] = $request->input('href') : '';
 
         $count = Permission::find($id)->update($validated);
 
         if ( $count == 1 ) {
             event(new OnChanged('update', "Update permission id [$id]"));
-            event(new OnMenuChanged($id) );
+            event(new OnMenuChanged($id, null) );
 
             return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
         } else {
@@ -170,11 +173,36 @@ class PermissionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('delete', Permission::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.permission.destroy')])]);
+        }
+
+        if ( $request->filled('ids') ) {
+            $ids = $request->input('ids');
+            // permission_role table will be detach cause cascadeOnDelete method in migration
+            $count = Permission::destroy($ids);
+            // Re-make menu
+
+            if ( $count == 0 ) {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            } else {
+                $failed = count($ids) - $count;
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok') . " | $count success $failed failed"]);
+            }
+        } else {
+            $count = Permission::destroy($id);
+            
+            if ( $count == 1 ) {
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok')]);
+            } else {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            }
+        }
     }
 }

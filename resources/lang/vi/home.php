@@ -29,6 +29,9 @@ return [
         'edit' => 'Sửa vai trò',
         'update' => 'Sửa vai trò',
         'destroy' => 'Xoá vai trò',
+        'name' => 'Tên vai trò',
+        'desc' => 'Mô tả',
+        'permission' => 'Gán quyền',
     ],
     'permission' => [
         'index' => 'Quản Lý Quyền',
@@ -86,5 +89,8 @@ return [
         'no' => 'Xoá thất bại',
     ],
     'save' => 'Lưu thay đổi',
+    'created_at' => 'Thời gian tạo',
+    'updated_at' => 'Thời gian sửa',
+    'not_selected' => 'Bạn chưa chọn mục nào.',
 
 ];
