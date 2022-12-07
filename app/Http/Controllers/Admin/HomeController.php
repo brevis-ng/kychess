@@ -46,4 +46,37 @@ class HomeController extends Controller
             return json_encode($dummy);
         }
     }
+
+    /**
+     * System log event
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function log(Request $request)
+    {
+        
+    }
+
+    /**
+     * IP whitelist settings
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function whitelist(Request $request)
+    {
+        
+    }
+
+    /**
+     * An announcement displayed in activity page
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function announcement(Request $request)
+    {
+        
+    }
 }

@@ -36,6 +36,10 @@ Route::group([
             Route::resource('admin', AdminController::class);
             Route::resource('roles', RoleController::class);
             Route::resource('permissions', PermissionController::class);
+
+            Route::match(['get', 'post'], 'log', [HomeController::class, 'log'])->name('home.log');
+            Route::match(['get', 'post'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
+            Route::match(['get', 'post'], 'announcement', [HomeController::class, 'announcement'])->name('home.announcement');
         });
     });
 

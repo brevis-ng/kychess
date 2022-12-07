@@ -92,5 +92,9 @@ return [
     'created_at' => 'Thời gian tạo',
     'updated_at' => 'Thời gian sửa',
     'not_selected' => 'Bạn chưa chọn mục nào.',
+    'system' => 'Hệ thống',
+    'log' => 'Nhật ký',
+    'whitelist' => 'IP Hợp pháp',
+    'announcement' => 'Thông báo',
 
 ];

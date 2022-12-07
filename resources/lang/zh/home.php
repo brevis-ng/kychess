@@ -91,5 +91,9 @@ return [
     'created_at' => '创建时间',
     'updated_at' => '更新时间',
     'not_selected' => '您还没有选择任何内容。',
+    'system' => '系统设置',
+    'log' => ' 操作日记',
+    'whitelist' => 'IP白名单',
+    'announcement' => '公告设置',
 
 ];
