@@ -16,7 +16,7 @@ class RoleSeeder extends Seeder
     {
         $menu = [
             'homeInfo' => [
-                'title' => 'dashboard',
+                'title' => 'Dashboard',
                 'href' => route('home.dashboard'),
             ],
             'logoInfo' => [
