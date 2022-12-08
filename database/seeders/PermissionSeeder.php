@@ -38,13 +38,19 @@ class PermissionSeeder extends Seeder
             ['pid' => 13, 'title' => 'permission.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'permission.update', 'created_at' => now()],
             ['pid' => 13, 'title' => 'permission.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'permission.destroy', 'created_at' => now()],
             // *----*
+            ['pid' => 1, 'title' => 'activity.name', 'icon' => 'fa fa-gamepad', 'href' => '', 'level' => 0, 'action' => 'menu.activity', 'created_at' => now()],
+            // *----*----*
+            ['pid' => 18, 'title' => 'activity.index', 'icon' => 'fa fa-puzzle-piece', 'href' => route('activity.index'), 'level' => 1, 'action' => 'activity.viewAny', 'created_at' => now()],
+            ['pid' => 18, 'title' => 'activity.show', 'icon' => 'fa fa-eye', 'href' => '', 'level' => 2, 'action' => 'activity.view', 'created_at' => now()],
+            ['pid' => 18, 'title' => 'activity.create', 'icon' => 'fa fa-user-plus', 'href' => '', 'level' => 2, 'action' => 'activity.create', 'created_at' => now()],
+            ['pid' => 18, 'title' => 'activity.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'activity.update', 'created_at' => now()],
+            ['pid' => 18, 'title' => 'activity.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'activity.destroy', 'created_at' => now()],
+            // *----*
             ['pid' => 1, 'title' => 'system', 'icon' => 'fa fa-cogs', 'href' => '', 'level' => 0, 'action' => 'menu.system', 'created_at' => now()],
             // *----*----*
-            ['pid' => 18, 'title' => 'log', 'icon' => 'fa fa-code-fork', 'href' => route('home.log'), 'level' => 1, 'action' => 'log.viewAny', 'created_at' => now()],
-            // *----*----*
-            ['pid' => 18, 'title' => 'whitelist', 'icon' => 'fa fa-shield', 'href' => route('home.whitelist'), 'level' => 1, 'action' => 'whitelist.viewAny', 'created_at' => now()],
-            // *----*----*
-            ['pid' => 18, 'title' => 'announcement', 'icon' => 'fa fa-send', 'href' => route('home.announcement'), 'level' => 1, 'action' => 'announcement.viewAny', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'log', 'icon' => 'fa fa-code-fork', 'href' => route('home.log'), 'level' => 1, 'action' => 'log.viewAny', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'whitelist', 'icon' => 'fa fa-shield', 'href' => route('home.whitelist'), 'level' => 1, 'action' => 'whitelist.viewAny', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'announcement', 'icon' => 'fa fa-send', 'href' => route('home.announcement'), 'level' => 1, 'action' => 'announcement.viewAny', 'created_at' => now()],
         ]);
     }
 }

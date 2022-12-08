@@ -31,6 +31,8 @@ class RoleSeeder extends Seeder
             'name' => 'Administrator',
             'description' => 'Administrator组 拥有后台所有权限',
             'menu' => json_encode($menu),
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
         // Insert pivot table
