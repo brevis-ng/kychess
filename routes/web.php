@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ActivityController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -36,6 +37,7 @@ Route::group([
             Route::resource('admin', AdminController::class);
             Route::resource('roles', RoleController::class);
             Route::resource('permissions', PermissionController::class);
+            Route::resource('activity', ActivityController::class);
 
             Route::match(['get', 'post'], 'log', [HomeController::class, 'log'])->name('home.log');
             Route::match(['get', 'post'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
@@ -50,10 +52,5 @@ Route::group([
 
 
 Route::get('/', function () {
-    // return view('welcome');
-    $role = \App\Models\Role::find(1);
-
-    $belongto_role = $role->permissions()->pluck('permissions.id')->toArray();
-
-    dd($belongto_role);
+    return view('welcome');
 });

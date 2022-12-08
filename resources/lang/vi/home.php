@@ -47,6 +47,24 @@ return [
         'level' => 'Cấp độ menu',
         'pid' => 'ID Đường dẫn cha'
     ],
+    'activity' => [
+        'name' => 'Cài đặt hoạt động',
+        'index' => 'Quản Lý Hoạt Động',
+        'show' => 'Danh sách hoạt động',
+        'create' => 'Thêm hoạt động',
+        'store' => 'Thêm hoạt động',
+        'edit' => 'Sửa hoạt động',
+        'update' => 'Sửa hoạt động',
+        'destroy' => 'Xoá hoạt động',
+        'title' => 'Tiêu đề',
+        'forms' => 'Mẫu đơn',
+        'poster' => 'Hình ảnh',
+        'repeatable' => 'Cho phép lặp đơn',
+        'repetition_name' => 'Trường không lặp lại',
+        'content' => 'Nội dung',
+        'sort' => 'Sắp xếp',
+        'active' => 'Hiển thị',
+    ],
     'status' => 'Trạng thái',
     'active' => 'Kích hoạt',
     'inactive' => 'Vô hiệu hoá',
@@ -96,5 +114,7 @@ return [
     'log' => 'Nhật ký',
     'whitelist' => 'IP Hợp pháp',
     'announcement' => 'Thông báo',
+    'open' => 'Mở',
+    'close' => 'Tắt',
 
 ];

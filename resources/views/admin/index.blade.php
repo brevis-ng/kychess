@@ -22,7 +22,7 @@
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>.layui-form-pane .layui-form-label{padding: 8px 0 !important;}</style>
+    <style>.layui-form-pane .layui-form-label{padding: 8px 0 !important;}.layuimini-menu-left .layui-nav .layui-nav-item a{padding-right:0px !important;}</style>
     <style id="layuimini-bg-color">
     </style>
 </head>

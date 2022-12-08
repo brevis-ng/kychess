@@ -47,6 +47,24 @@ return [
         'level' => '菜单等级',
         'pid' => '路由父ID'
     ],
+    'activity' => [
+        'name' => ' 活动设置',
+        'index' => '活动管理',
+        'show' => '活动列表',
+        'create' => '活动添加',
+        'store' => '活动添加',
+        'edit' => '活动编辑',
+        'update' => '活动编辑',
+        'destroy' => '活动删除',
+        'title' => '标题',
+        'forms' => '表单',
+        'poster' => '图片路径',
+        'repeatable' => '重复申请',
+        'repetition_name' => '不能重复字段',
+        'content' => '表格代码',
+        'sort' => '排序',
+        'active' => '是否显示',
+    ],
     'status' => '状态',
     'active' => '启用',
     'inactive' => '禁用',
@@ -95,5 +113,7 @@ return [
     'log' => ' 操作日记',
     'whitelist' => 'IP白名单',
     'announcement' => '公告设置',
+    'open' => '开启',
+    'close' => '关闭',
 
 ];

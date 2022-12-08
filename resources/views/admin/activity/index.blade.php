@@ -7,15 +7,9 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
-                            <label class="layui-form-label">{{ __('home.username') }}</label>
+                            <label class="layui-form-label">{{ __('home.activity.title') }}</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">{{ __('home.name') }}</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                                <input type="text" name="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-inline">
@@ -28,10 +22,10 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                @can('create', App\Models\User::class)
+                @can('create', App\Models\Activity::class)
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> {{ __('home.add.title') }} </button>
                 @endcan
-                @can('delete', App\Models\User::class)
+                @can('delete', App\Models\Activity::class)
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> {{ __('home.delete.title') }} </button>
                 @endcan
             </div>
@@ -39,13 +33,20 @@
 
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <x-action-button :model="App\Models\User::class" ></x-action-button>
+        <x-action-button :model="App\Models\Activity::class" ></x-action-button>
 
         <script type="text/html" id="statusTpl">
-            @{{#  if(d.status){ }}
+            @{{#  if(d.active){ }}
               <a href="javascript:;" style="color: #5FB878;" lay-event="chgstatus">{{ __('home.active') }}</a>
             @{{#  } else { }}
               <a href="javascript:;" style="color: #FF5722;" lay-event="chgstatus">{{ __('home.inactive') }}</a>
+            @{{#  } }}
+        </script>
+        <script type="text/html" id="repeatableTpl">
+            @{{#  if(d.repeatable){ }}
+              <a href="javascript:;" style="color: #5FB878;" lay-event="chgstatus">{{ __('home.open') }}</a>
+            @{{#  } else { }}
+              <a href="javascript:;" style="color: #FF5722;" lay-event="chgstatus">{{ __('home.close') }}</a>
             @{{#  } }}
         </script>
 
@@ -60,7 +61,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '{{ route("admin.index") . "?type=menu" }}',
+            url: '{{ route("activity.index") . "?type=menu" }}',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -69,14 +70,13 @@
             }],
             cols: [[
                 {type: "checkbox", width: 50},
-                {field: 'id', width: 60, title: 'ID', sort: true},
-                {field: 'username', width: 150, title: '{{__("home.username")}}'},
-                {field: 'name', width: 150, title: '{{__("home.name")}}', sort: true},
-                {field: 'status', width: 150, title: '{{__("home.status")}}', templet: '#statusTpl'},
-                {field: 'login_count', width: 180, title: '{{__("home.login_count")}}', sort: true},
-                {field: 'last_login', width: 180, title: '{{__("home.last_login")}}', sort: true},
-                {field: 'last_ip', width:150, title: '{{__("home.last_ip")}}'},
-                {field: 'role_id', width: 150, title: '{{__("home.role")}}', sort: true},
+                {field: 'id', width: 50, title: 'ID'},
+                {field: 'title', width: 150, title: '{{__("home.activity.title")}}'},
+                {field: 'forms', width: 150, title: '{{__("home.activity.forms")}}'},
+                {field: 'poster', width: 200, title: '{{__("home.activity.poster")}}'},
+                {field: 'repeatable', width: 180, title: '{{__("home.activity.repeatable")}}', sort: true, templet: '#repeatableTpl'},
+                {field: 'active', width:150, title: '{{__("home.activity.active")}}', sort: true, templet: '#statusTpl'},
+                {field: 'created_at', width: 150, title: '{{__("home.created_at") }}', sort: true},
                 {title: '{{__("home.action")}}', minWidth: 50, toolbar: '#currentTableBar', align: "center"}
             ]],
             page: false,
@@ -103,11 +103,11 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {   // 监听添加操作
-                var content = miniPage.getHrefContent("{{ route('admin.create') }}");
+                var content = miniPage.getHrefContent("{{ route('activity.create') }}");
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
-                    title: "{{ __('home.admin.create') }}",
+                    title: "{{ __('home.activity.create') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
