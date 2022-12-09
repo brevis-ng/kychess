@@ -188,6 +188,7 @@ class PermissionController extends Controller
             // permission_role table will be detach cause cascadeOnDelete method in migration
             $count = Permission::destroy($ids);
             // Re-make menu
+            event(new OnMenuChanged($ids, null));
 
             if ( $count == 0 ) {
                 return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
@@ -197,6 +198,7 @@ class PermissionController extends Controller
             }
         } else {
             $count = Permission::destroy($id);
+            event(new OnMenuChanged($id, null) );
             
             if ( $count == 1 ) {
                 return response()->json(['code' => 200, 'msg' => trans('home.delete.ok')]);

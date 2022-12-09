@@ -95,7 +95,7 @@
                     function (index) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ route('admin.destroy', ['admin' => 'adminId']) }}".replace('adminId', ids[0]),
+                            url: "{{ route('permissions.destroy', ['permission' => 'permissionId']) }}".replace('permissionId', ids[0]),
                             data: {ids: ids},
                             dataType: "json",
                             headers: {

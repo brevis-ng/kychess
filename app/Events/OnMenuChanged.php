@@ -20,7 +20,7 @@ class OnMenuChanged
      * 
      * @var array|null $role_ids
      */
-    public $role_ids;
+    public $role_ids = [];
 
     /**
      * Create a new event instance.
