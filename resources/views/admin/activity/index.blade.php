@@ -73,10 +73,10 @@
                 {field: 'id', width: 50, title: 'ID'},
                 {field: 'title', width: 150, title: '{{__("home.activity.title")}}'},
                 {field: 'forms', width: 150, title: '{{__("home.activity.forms")}}'},
-                {field: 'poster', width: 200, title: '{{__("home.activity.poster")}}'},
-                {field: 'repeatable', width: 180, title: '{{__("home.activity.repeatable")}}', sort: true, templet: '#repeatableTpl'},
-                {field: 'active', width:150, title: '{{__("home.activity.active")}}', sort: true, templet: '#statusTpl'},
-                {field: 'created_at', width: 150, title: '{{__("home.created_at") }}', sort: true},
+                {field: 'poster', width: 250, title: '{{__("home.activity.poster")}}'},
+                {field: 'repeatable', width: 160, title: '{{__("home.activity.repeatable")}}', sort: true, templet: '#repeatableTpl'},
+                {field: 'active', width:120, title: '{{__("home.activity.active")}}', sort: true, templet: '#statusTpl'},
+                {field: 'created_at', width: 180, title: '{{__("home.created_at") }}', sort: true},
                 {title: '{{__("home.action")}}', minWidth: 50, toolbar: '#currentTableBar', align: "center"}
             ]],
             page: false,
@@ -115,6 +115,20 @@
                     area: [openWH[0] + 'px', openWH[1] + 'px'],
                     offset: [openWH[2] + 'px', openWH[3] + 'px'],
                     content: content,
+                    end: function() {
+                        // Remove upload poster if user cancel creating activity process
+                        $.ajax({
+                            type: "GET",
+                            url: "{{ route('home.activity_flush') }}",
+                            dataType: "json",
+                            success: function (response) {
+                                if ( response.code == 200 ) {
+                                    top.layer.msg(response.msg, {icon: 6, time:2000})
+                                    layer.close(index)
+                                }
+                            }
+                        });
+                    }
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
@@ -132,7 +146,7 @@
                     function (index) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ route('admin.destroy', ['admin' => 'adminId']) }}".replace('adminId', ids[0]),
+                            url: "{{ route('activity.destroy', ['activity' => 'activityId']) }}".replace('activityId', ids[0]),
                             data: {ids: ids},
                             dataType: "json",
                             headers: {
@@ -163,11 +177,11 @@
             var data = obj.data;
             if (obj.event === 'edit') {
 
-                var content = miniPage.getHrefContent("{{ route('admin.edit', ['admin' => 'adminId']) }}".replace('adminId', data.id));
+                var content = miniPage.getHrefContent("{{ route('activity.edit', ['activity' => 'activityId']) }}".replace('activityId', data.id));
                 var openWH = miniPage.getOpenWidthHeight();
 
                 var index = layer.open({
-                    title: "{{ __('home.admin.edit') }}",
+                    title: "{{ __('home.activity.edit') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
@@ -187,7 +201,7 @@
                     function (index) {
                         $.ajax({
                             type: "DELETE",
-                            url: "{{ route('admin.destroy', ['admin' => 'adminId']) }}".replace('adminId', data.id),
+                            url: "{{ route('activity.destroy', ['activity' => 'activityId']) }}".replace('activityId', data.id),
                             dataType: "json",
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token(); }}'

@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Events\OnChanged;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\Rule;
 
 class ActivityController extends Controller
 {
@@ -48,7 +51,7 @@ class ActivityController extends Controller
      */
     public function create(Request $request)
     {
-        if ( $request->user()->cannot('create', User::class) ) {
+        if ( $request->user()->cannot('create', Activity::class) ) {
             return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.activity.create')])]);
         }
 
@@ -63,7 +66,33 @@ class ActivityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ( $request->user()->cannot('create', Activity::class) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.activity.create')])]);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'forms' => 'required',
+            'content' => 'required',
+            'repetition_name' => Rule::requiredIf( ! $request->boolean('repeatable') ),
+        ]);
+        $validated['poster'] = $request->input('poster');
+        $validated['sort'] = $request->filled('sort') ? $request->input('sort') : Activity::all()->count() + 1;
+        $validated['repeatable'] = $request->boolean('repeatable');
+        $validated['repetition_name'] = $request->input('repetition_name');
+        $validated['active'] = $request->boolean('active');
+
+        $activity = Activity::create($validated);
+
+        if ( $activity ) {
+            Cache::forget('newest_poster_path');
+
+            event(new OnChanged('create', "Create permission id [$activity->id]"));
+
+            return response()->json(['code' => 200, 'msg' => trans('home.add.ok')]);
+        } else {
+            return response()->json(['code' => 400, 'msg' => trans('home.add.no')]);
+        }
     }
 
     /**
@@ -80,12 +109,17 @@ class ActivityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', Activity::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.activity.edit')])]);
+        }
+
+        return view('admin.activity.edit', ['activity' => Activity::find($id)]);
     }
 
     /**
@@ -97,17 +131,64 @@ class ActivityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('update', Activity::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.activity.edit')])]);
+        }
+
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'forms' => 'required',
+            'content' => 'required',
+            'repetition_name' => Rule::requiredIf( ! $request->boolean('repeatable') ),
+        ]);
+        $validated['poster'] = $request->input('poster');
+        $validated['sort'] = $request->filled('sort') ? $request->input('sort') : Activity::all()->count() + 1;
+        $validated['repeatable'] = $request->boolean('repeatable');
+        $validated['repetition_name'] = $request->input('repetition_name');
+        $validated['active'] = $request->boolean('active');
+
+        $count = Activity::find($id)->update($validated);
+
+        if ( $count == 1 ) {
+            event(new OnChanged('update', "Update activity id [$id]"));
+
+            return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
+        } else {
+            return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        //
+        if ( $request->user()->cannot('delete', Activity::find($id)) ) {
+            return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.activity.destroy')])]);
+        }
+
+        if ( $request->filled('ids') ) {
+            $ids = $request->input('ids');
+            $count = Activity::destroy($ids);
+
+            if ( $count == 0 ) {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            } else {
+                $failed = count($ids) - $count;
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok') . " | $count success $failed failed"]);
+            }
+        } else {
+            $count = Activity::destroy($id);
+            
+            if ( $count == 1 ) {
+                return response()->json(['code' => 200, 'msg' => trans('home.delete.ok')]);
+            } else {
+                return response()->json(['code' => 400, 'msg' => trans('home.delete.no')]);
+            }
+        }
     }
 }

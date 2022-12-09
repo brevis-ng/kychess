@@ -62,7 +62,6 @@ return [
         'repeatable' => '重复申请',
         'repetition_name' => '不能重复字段',
         'content' => '表格代码',
-        'sort' => '排序',
         'active' => '是否显示',
     ],
     'status' => '状态',
@@ -115,5 +114,14 @@ return [
     'announcement' => '公告设置',
     'open' => '开启',
     'close' => '关闭',
+    'upload' => [
+        'img' => '上传图片',
+        'ok' => '上传成功',
+        'no' => '上传失败',
+        'loading' => '上传中',
+        'done' => '上传完毕',
+    ],
+    'retry' => '重试',
+    'sort' => '排序',
 
 ];

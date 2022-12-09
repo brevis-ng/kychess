@@ -33,6 +33,8 @@ Route::group([
             Route::get('index', [HomeController::class, 'index'])->name('home.index');
             Route::get('dashboard', [HomeController::class, 'dashboard'])->name('home.dashboard');
             Route::get('menu', [HomeController::class, 'menu'])->name('home.menu');
+            Route::post('upload', [HomeController::class, 'upload_poster'])->name('home.upload');
+            Route::get('cancel-upload', [HomeController::class, 'cancel_upload'])->name('home.activity_flush');
 
             Route::resource('admin', AdminController::class);
             Route::resource('roles', RoleController::class);

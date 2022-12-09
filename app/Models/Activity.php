@@ -35,6 +35,8 @@ class Activity extends Model
     protected $casts = [
         'repeatable' => 'boolean',
         'active' => 'boolean',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     public const VIEWANY = 'activity.viewAny';

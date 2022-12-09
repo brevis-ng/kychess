@@ -62,7 +62,6 @@ return [
         'repeatable' => 'Cho phép lặp đơn',
         'repetition_name' => 'Trường không lặp lại',
         'content' => 'Nội dung',
-        'sort' => 'Sắp xếp',
         'active' => 'Hiển thị',
     ],
     'status' => 'Trạng thái',
@@ -116,5 +115,14 @@ return [
     'announcement' => 'Thông báo',
     'open' => 'Mở',
     'close' => 'Tắt',
+    'upload' => [
+        'img' => 'Tải ảnh lên',
+        'ok' => 'Tải lên thành công',
+        'no' => 'Tải lên thất bại',
+        'loading' => 'Đang tải lên',
+        'done' => 'Hoàn tất tải lên',
+    ],
+    'retry' => 'Thử lại',
+    'sort' => 'Sắp xếp',
 
 ];
