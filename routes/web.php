@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\TicketController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -41,15 +42,26 @@ Route::group([
             Route::resource('permissions', PermissionController::class);
             Route::resource('activity', ActivityController::class);
 
-            Route::match(['get', 'post'], 'log', [HomeController::class, 'log'])->name('home.log');
-            Route::match(['get', 'post'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
-            Route::match(['get', 'post'], 'announcement', [HomeController::class, 'announcement'])->name('home.announcement');
+            Route::match(['get', 'put'], 'log', [HomeController::class, 'log'])->name('home.log');
+            Route::match(['get', 'put'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
+            Route::match(['get', 'put'], 'announcement', [HomeController::class, 'announcement'])->name('home.announcement');
+            Route::match(['get', 'put'], 'shortcut', [HomeController::class, 'shortcut'])->name('home.shortcut');
+
+            Route::controller(TicketController::class)
+                ->prefix('tickets')
+                ->as('ticket.')
+                ->group(function () {
+                    Route::get('pending', 'pending')->name('pending');
+                    Route::get('audited', 'audited')->name('audited');
+                    Route::get('chart', 'chart')->name('chart');
+                    Route::put('{ticket}/accept', 'accept')->name('accept');
+                    Route::put('{ticket}/reject', 'reject')->name('reject');
+                }
+            );
         });
     });
 
-    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->middleware('auth')
-        ->name('auth.destroy');
+    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])->middleware('auth')->name('auth.destroy');
 });
 
 

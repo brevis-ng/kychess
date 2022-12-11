@@ -35,7 +35,9 @@ class Permission extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'status' => 'boolean'
+        'status' => 'boolean',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**

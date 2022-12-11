@@ -49,6 +49,14 @@ class User extends Authenticatable
         'status' => 'boolean',
     ];
 
+    /**
+     * Get the tickets for the handler.
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
     public const VIEWANY = 'admin.viewAny';
     public const VIEW = 'admin.view';
     public const CREATE = 'admin.create';

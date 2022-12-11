@@ -39,6 +39,14 @@ class Activity extends Model
         'updated_at' => 'datetime:Y-m-d H:i:s',
     ];
 
+    /**
+     * Get the tickets for the activity.
+     */
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
     public const VIEWANY = 'activity.viewAny';
     public const VIEW = 'activity.view';
     public const CREATE = 'activity.create';
