@@ -123,6 +123,27 @@ return [
         'ok' => 'Xoá thành công',
         'no' => 'Xoá thất bại',
     ],
+    'export' => [
+        'title' => 'Xuất File',
+        'ok' => 'Xuất file thành công',
+        'no' => 'Xuất file thất bại',
+        'load' => 'Đang chuẩn bị dữ liệu',
+        'all' => 'Xuất toàn bộ',
+    ],
+    'accept' => [
+        'all' => 'Chấp nhận tất cả',
+        'one' => 'Chấp nhận',
+        'confirm' => 'Bạn có chắc muốn chấp nhận tất cả?',
+        'ok' => 'Cập nhật thành công',
+        'no' => 'Cập nhật thất bại',
+    ],
+    'reject' => [
+        'all' => 'Từ chối tất cả',
+        'one' => 'Từ chối',
+        'confirm' => 'Bạn có chắc muốn từ chối tất cả?',
+        'ok' => 'Cập nhật thành công',
+        'no' => 'Cập nhật thất bại',
+    ],
     'save' => 'Lưu thay đổi',
     'created_at' => 'Thời gian tạo',
     'updated_at' => 'Thời gian sửa',
@@ -142,5 +163,6 @@ return [
     ],
     'retry' => 'Thử lại',
     'sort' => 'Sắp xếp',
+    'click_detail' => 'Xem chi tiết',
 
 ];

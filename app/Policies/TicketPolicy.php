@@ -58,12 +58,12 @@ class TicketPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\Ticket|null  $ticket
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Ticket $ticket)
+    public function update(User $user, Ticket $ticket = null)
     {
-        //
+        return true;
     }
 
     /**

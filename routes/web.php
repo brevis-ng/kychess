@@ -54,8 +54,9 @@ Route::group([
                     Route::get('pending', 'pending')->name('pending');
                     Route::get('audited', 'audited')->name('audited');
                     Route::get('chart', 'chart')->name('chart');
-                    Route::put('{ticket}/accept', 'accept')->name('accept');
-                    Route::put('{ticket}/reject', 'reject')->name('reject');
+                    Route::put('accept', 'accept')->name('accept');
+                    Route::put('reject', 'reject')->name('reject');
+                    Route::get('export', 'export')->name('export');
                 }
             );
         });

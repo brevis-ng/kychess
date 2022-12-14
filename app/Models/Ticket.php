@@ -59,7 +59,7 @@ class Ticket extends Model
     public const VIEWAUDITED = 'tickets.viewAudited';
     public const VIEWCHART = 'tickets.viewChart';
     public const UPDATE = 'tickets.update';
-    public const pending = 'pendding';
+    public const PENDING = 'pending';
     public const ACCEPTED = 'accepted';
     public const REJECTED = 'rejected';
 }
