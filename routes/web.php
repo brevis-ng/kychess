@@ -56,7 +56,9 @@ Route::group([
                     Route::get('chart', 'chart')->name('chart');
                     Route::put('accept', 'accept')->name('accept');
                     Route::put('reject', 'reject')->name('reject');
-                    Route::get('export', 'export')->name('export');
+                    Route::get('export', 'export')
+                        ->withoutMiddleware(['localeSessionRedirect', 'localizationRedirect', 'localeCookieRedirect'])
+                        ->name('export');
                 }
             );
         });

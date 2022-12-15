@@ -4,11 +4,11 @@
             <div class="layui-inline">
                 <label class="layui-form-label">{{ __('home.created_at') }}</label>
                 <div class="layui-input-inline" style="width: 120px;">
-                    <input type="text" name="date-from" id="dateFrom" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    <input type="text" name="submit-start" id="dateFrom" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                 </div>
                 <div class="layui-form-mid">-</div>
                 <div class="layui-input-inline" style="width: 120px;">
-                    <input type="text" name="date-to" id="dateTo" lay-verify="date" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                    <input type="text" name="submit-end" id="dateTo" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                 </div>
             </div>
         </div>
@@ -51,35 +51,36 @@
         });
         //监听提交
         form.on('submit(saveBtn)', function (data) {
-            $.ajax({
-                url: "{{ route('ticket.export') }}",
-                type: 'GET',
-                data: data.field,
-                dataType: 'json',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function (res) {
-                    if (res.code == 200) {
-                        layer.msg(res.msg, {icon:6, time:2000});
-                        location.reload();
-                    } else {
-                        layer.msg(res.msg, {icon:5, time:2000})
-                    }
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.responseJSON.errors.length !== 0) {
-                        var errors = jqXHR.responseJSON.errors;
-                        var attribute = '';
-                        var message = '';
-                        $.each(errors, function (attr, msgs) { 
-                            attribute = attr;
-                            message = msgs.join(',');
-                        });
-                        layer.msg(message, {icon: 5, shift: 6});
-                    }
-                }
-            });
+            location.href = "{{ route('ticket.export') }}?" + new URLSearchParams(data.field);
+            // $.ajax({
+            //     url: "{{ route('ticket.export') }}",
+            //     type: 'GET',
+            //     data: data.field,
+            //     dataType: 'json',
+            //     headers: {
+            //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            //     },
+            //     success: function (res) {
+            //         if (res.code == 200) {
+            //             layer.msg(res.msg, {icon:6, time:2000});
+            //             location.reload();
+            //         } else {
+            //             layer.msg(res.msg, {icon:5, time:2000})
+            //         }
+            //     },
+            //     error: function(jqXHR, textStatus, errorThrown) {
+            //         if (jqXHR.responseJSON.errors.length !== 0) {
+            //             var errors = jqXHR.responseJSON.errors;
+            //             var attribute = '';
+            //             var message = '';
+            //             $.each(errors, function (attr, msgs) { 
+            //                 attribute = attr;
+            //                 message = msgs.join(',');
+            //             });
+            //             layer.msg(message, {icon: 5, shift: 6});
+            //         }
+            //     }
+            // });
             // 关闭弹出层
             layer.close(parentIndex);
         });

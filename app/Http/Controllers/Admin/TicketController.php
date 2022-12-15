@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\TicketExport;
 use App\Http\Controllers\Controller;
 use App\Models\Activity;
 use App\Models\Ticket;
@@ -134,8 +135,23 @@ class TicketController extends Controller
         if ( $request->has("type") && hash_equals("options", $request->query("type")) ) {
             return view('admin.ticket.options');
         }
-        
-        
+
+        $exporter = new TicketExport();
+
+        if ( $request->has('status') ) {
+            $exporter->setStatus( array_keys($request->input('status')) );
+        }
+        if (
+            $request->filled('submit-start') ||
+            $request->filled('submit-end')
+        ) {
+            $exporter->setSubmitTime(
+                $request->input('submit-start'),
+                $request->input('submit-end')
+            );
+        }
+
+        return $exporter->download('data.xlsx');
     }
 
     /**
