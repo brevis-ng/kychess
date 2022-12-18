@@ -4,9 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exports\TicketExport;
 use App\Http\Controllers\Controller;
+use App\Jobs\TicketExportJob;
 use App\Models\Activity;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Storage;
 
 class TicketController extends Controller
 {
@@ -130,38 +134,86 @@ class TicketController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function export(Request $request)
+    public function export(Request  $request)
     {
         if ( $request->has("type") && hash_equals("options", $request->query("type")) ) {
             return view('admin.ticket.options');
         }
 
-        $exporter = new TicketExport();
+        $status = null;
+        $submit_start = null;
+        $submit_end = null;
 
         if ( $request->has('status') ) {
-            $exporter->setStatus( array_keys($request->input('status')) );
+            $status = array_keys($request->input('status'));
         }
         if (
             $request->filled('submit-start') ||
             $request->filled('submit-end')
         ) {
-            $exporter->setSubmitTime(
-                $request->input('submit-start'),
-                $request->input('submit-end')
-            );
+            $submit_start = $request->input('submit-start');
+            $submit_end = $request->input('submit-end');
         }
-
-        return $exporter->download('data.xlsx');
+        $file_name = config('app.name') . date('YmdHis') . '.xlsx';
+        
+        $batch = Bus::batch([
+            new TicketExportJob($file_name, $status, $submit_start, $submit_end)
+            ])->dispatch();
+            
+        Cache::forever($batch->id, $file_name);
+        return response()->json([
+            'code' => 200,
+            'msg' => '',
+            'batchId' => $batch->id,
+            'isExporting' => true,
+            'isExportFinished' => false,
+        ]);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Update export status.
+     * 
+     * @param  \Illuminate\Http\Request  $request
      */
-    public function destroy($id)
+    public function updateExportProgress(Request $request)
     {
-        //
+        if ( ! $request->has('batchId') ) {
+            return response()->json([
+                'code' => 404,
+                'msg' => 'Batch Id is required.',
+            ]);
+        }
+
+        $batch = Bus::findBatch($request->input('batchId'));
+
+        if ( $batch ) {
+            return response()->json([
+                'code' => 200,
+                'msg' => trans('home.export.link', [
+                    'href' => route('ticket.download-export', ['batchId' => $batch->id]),
+                    'name' => Cache::get($batch->id),
+                ]),
+                'batchId' => $batch->id,
+                'isExportFinished' => $batch->finished(),
+            ]);
+        } else {
+            return response()->json([
+                'code' => 404,
+                'msg' => 'Queue job not found!',
+            ]);
+        }
+    }
+
+    /**
+     * Download export file
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     */
+    public function downloadExport(Request $request)
+    {
+        $file_name = Cache::get($request->input('batchId'));
+        if ( $file_name ) {
+            return response()->download(Storage::path('public/' . $file_name))->deleteFileAfterSend();
+        }
     }
 }

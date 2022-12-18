@@ -32,9 +32,10 @@
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
-                <button class="layui-btn layui-btn-sm" lay-event="export"> {{ __('home.export.title') }} </button>
+                <button class="layui-btn layui-btn-sm" id="exportBtn" lay-event="export"> {{ __('home.export.title') }} </button>
                 <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="accept-all"> {{ __('home.accept.all') }} </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="reject-all"> {{ __('home.reject.all') }} </button>
+                <div class="layui-inline" style="font-size: 14px;display: none;" id="exportStatus"></div>
             </div>
         </script>
 
@@ -185,7 +186,6 @@
                 );
             } else if (obj.event === 'export') {
                 var content = miniPage.getHrefContent("{{ route('ticket.export', ['type' => 'options']) }}");
-
                 var index = layer.open({
                     title: "{{ __('home.export.title') }}",
                     type: 1,

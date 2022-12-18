@@ -127,8 +127,9 @@ return [
         'title' => 'Xuất File',
         'ok' => 'Xuất file thành công',
         'no' => 'Xuất file thất bại',
-        'load' => 'Đang chuẩn bị dữ liệu',
+        'load' => 'Đang chuẩn bị dữ liệu...',
         'all' => 'Xuất toàn bộ',
+        'link' => 'Hoàn thành, Ấn để tải file <a id="fileExport" style="color: #1E9FFF" href=" :href "> :name </a>',
     ],
     'accept' => [
         'all' => 'Chấp nhận tất cả',

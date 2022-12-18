@@ -59,6 +59,10 @@ Route::group([
                     Route::get('export', 'export')
                         ->withoutMiddleware(['localeSessionRedirect', 'localizationRedirect', 'localeCookieRedirect'])
                         ->name('export');
+                    Route::get('export-progress', 'updateExportProgress')->name('export-progress');
+                    Route::get('download-export', 'downloadExport')
+                        ->withoutMiddleware(['localeSessionRedirect', 'localizationRedirect', 'localeCookieRedirect'])
+                        ->name('download-export');
                 }
             );
         });

@@ -50,39 +50,47 @@
             elem: '#dateTo'
         });
         //监听提交
+        let pollInterval;
         form.on('submit(saveBtn)', function (data) {
-            location.href = "{{ route('ticket.export') }}?" + new URLSearchParams(data.field);
-            // $.ajax({
-            //     url: "{{ route('ticket.export') }}",
-            //     type: 'GET',
-            //     data: data.field,
-            //     dataType: 'json',
-            //     headers: {
-            //         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            //     },
-            //     success: function (res) {
-            //         if (res.code == 200) {
-            //             layer.msg(res.msg, {icon:6, time:2000});
-            //             location.reload();
-            //         } else {
-            //             layer.msg(res.msg, {icon:5, time:2000})
-            //         }
-            //     },
-            //     error: function(jqXHR, textStatus, errorThrown) {
-            //         if (jqXHR.responseJSON.errors.length !== 0) {
-            //             var errors = jqXHR.responseJSON.errors;
-            //             var attribute = '';
-            //             var message = '';
-            //             $.each(errors, function (attr, msgs) { 
-            //                 attribute = attr;
-            //                 message = msgs.join(',');
-            //             });
-            //             layer.msg(message, {icon: 5, shift: 6});
-            //         }
-            //     }
-            // });
+            $.ajax({
+                url: "{{ route('ticket.export') }}",
+                type: 'GET',
+                data: data.field,
+                dataType: 'json',
+                beforeSend: function () {
+                    $('#exportBtn').addClass('layui-btn-disabled');
+                    $('#exportStatus').html('{{ __("home.export.load") }}').show();
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        // poll(res.batchId);
+                        let batchId = res.batchId;
+                        pollInterval = setInterval(function() {
+                            poll(batchId);
+                        }, 1000);
+                    }
+                },
+            });
             // 关闭弹出层
             layer.close(parentIndex);
         });
+        // Check export job
+        const poll = function(batchId) {
+            $.ajax({
+                url: "{{ route('ticket.export-progress') }}?batchId=" + batchId,
+                type: "GET",
+                dataType: "json",
+                success: function(res) {
+                    if (res.code == 200) {
+                        if (res.isExportFinished) {
+                            clearInterval(pollInterval);
+                            $('#exportBtn').removeClass('layui-btn-disabled');
+                            $('#exportStatus').html(res.msg).show();
+                            $('#fileExport').on('click', () => {$('#exportStatus').html('').hide();});
+                        }
+                    }
+                }
+            });
+        };
     });
 </script>

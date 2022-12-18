@@ -126,8 +126,9 @@ return [
         'title' => '导出',
         'ok' => '导出成功',
         'no' => '导出失败',
-        'load' => '导出中',
+        'load' => '请稍等，导出中。。。',
         'all' => '所有导出',
+        'link' => '完毕，下载文件请点击 <a id="fileExport" style="color: #1E9FFF" href=" :href "> :name </a>',
     ],
     'accept' => [
         'all' => '批量派送',
