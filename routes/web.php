@@ -46,6 +46,7 @@ Route::group([
             Route::match(['get', 'put'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
             Route::match(['get', 'put'], 'announcement', [HomeController::class, 'announcement'])->name('home.announcement');
             Route::match(['get', 'put'], 'shortcut', [HomeController::class, 'shortcut'])->name('home.shortcut');
+            Route::get('get-shortcut', [HomeController::class, 'shortcut_api'])->name('home.get-shortcut');
 
             Route::controller(TicketController::class)
                 ->prefix('tickets')
@@ -56,6 +57,7 @@ Route::group([
                     Route::get('chart', 'chart')->name('chart');
                     Route::put('accept', 'accept')->name('accept');
                     Route::put('reject', 'reject')->name('reject');
+                    Route::put('update', 'update')->name('update');
                     Route::get('export', 'export')
                         ->withoutMiddleware(['localeSessionRedirect', 'localizationRedirect', 'localeCookieRedirect'])
                         ->name('export');

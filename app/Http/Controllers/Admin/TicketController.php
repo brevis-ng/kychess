@@ -59,13 +59,47 @@ class TicketController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function audited(Request $request)
     {
-        //
+        if ($request->user()->cannot("viewAny", Ticket::class)) {
+            return view("admin.403", ["message" => trans("home.cannot", ["permission" => trans("home.ticket.index")])]);
+        }
+
+        if ( $request->has("type") && hash_equals("menu", $request->query("type")) ) {
+            $current_page = $request->filled("page") ? intval($request->input("page")) : 1;
+            $per_page = $request->filled("limit") ? intval($request->input("limit")) : 20;
+
+            $where = [["status", "<>", Ticket::PENDING]];
+            if ($request->filled("searchParams")) {
+                $params = json_decode($request->input("searchParams"), true);
+                $where[] = ["username", "LIKE", "%" . $params["username"] . "%"];
+                if ($params["activity_id"] != "") {
+                    $where[] = ["activity_id", $params["activity_id"]];
+                }
+            }
+            
+            $tickets = Ticket::where($where)
+                ->with(['activity'])
+                ->orderBy("created_at", "desc")
+                ->paginate($per_page, ["*"], "page", $current_page)
+                ->toArray();
+
+            return response()->json([
+                "code" => 0,
+                "msg" => "success",
+                "count" => $tickets["total"],
+                "data" => $tickets["data"],
+            ]);
+        }
+
+        return view("admin.ticket.audited", [
+            "activities" => Activity::all(["id", "title"]),
+        ]);
     }
 
     /**
@@ -83,7 +117,7 @@ class TicketController extends Controller
         if ( $request->filled('ids') ) {
             $ids = $request->input('ids');
 
-            $count = Ticket::where('status', Ticket::PENDING)
+            $count = Ticket::where('status', '<>', Ticket::ACCEPTED)
                 ->whereIn('id', $ids)
                 ->update(['status' => Ticket::ACCEPTED]);
             
@@ -94,7 +128,7 @@ class TicketController extends Controller
                 return response()->json(['code' => 200, 'msg' => trans('home.accept.ok') . " | $count success $failed failed"]);
             }
         } else {
-            return response()->json(['code' => 200, 'msg' => trans('home.accept.no')]);
+            return response()->json(['code' => 400, 'msg' => trans('home.accept.no')]);
         }
     }
 
@@ -113,7 +147,7 @@ class TicketController extends Controller
         if ( $request->filled('ids') ) {
             $ids = $request->input('ids');
 
-            $count = Ticket::where('status', Ticket::PENDING)
+            $count = Ticket::where('status', '<>', Ticket::REJECTED)
                 ->whereIn('id', $ids)
                 ->update(['status' => Ticket::REJECTED]);
             
@@ -124,7 +158,53 @@ class TicketController extends Controller
                 return response()->json(['code' => 200, 'msg' => trans('home.reject.ok') . " | $count success $failed failed"]);
             }
         } else {
-            return response()->json(['code' => 200, 'msg' => trans('home.reject.no')]);
+            return response()->json(['code' => 400, 'msg' => trans('home.reject.no')]);
+        }
+    }
+
+    /**
+     * Update the ticket
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request)
+    {
+        if ($request->user()->cannot("update", Ticket::class)) {
+            return response()->json([
+                'code' => 403,
+                'msg' => trans('home.cannot', [
+                    'permission' => trans('home.ticket.edit')
+                ]),
+            ]);
+        }
+
+        if ( $request->filled('id') ) {
+            if ( $request->has('message') ) {
+                $ticket = Ticket::find($request->input('id'));
+                if ( $ticket == null ) {
+                    return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+                }
+                $ticket->feedback = $request->input('message');
+                $ticket->save();
+                return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
+            } elseif ( $request->has(['field', 'value']) ) {
+                $ticket = Ticket::find($request->input('id'));
+                if ( $ticket == null ) {
+                    return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+                }
+                try {
+                    $ticket->update([$request->input('field') => $request->input('value')]);
+                } catch (\Throwable $th) {
+                    return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
+                }
+                return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
+            }
+        } else {
+            return response()->json([
+                'code' => 400,
+                'msg' => trans('validation.required', ['attribute' => 'ID']),
+            ]);
         }
     }
 

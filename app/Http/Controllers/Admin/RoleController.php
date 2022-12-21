@@ -224,7 +224,7 @@ class RoleController extends Controller
                 'level' => $permission['level'],
             ];
 
-            if ( $permission['level'] == 2 && in_array($permission['id'], $belongto_role) ) {
+            if ( $permission['level'] != 0 && in_array($permission['id'], $belongto_role) ) {
                 $treeable[$i]['checked'] = true;
             } else {
                 $treeable[$i]['checked'] = false;

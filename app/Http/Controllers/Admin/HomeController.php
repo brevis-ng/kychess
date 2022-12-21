@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 use App\Models\Role;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -80,6 +81,36 @@ class HomeController extends Controller
     public function announcement(Request $request)
     {
         
+    }
+
+    /**
+     * Shortcut message of ticket
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function shortcut(Request $request)
+    {
+        if ( $request->isMethod('GET') ) {
+            if ( $request->input('action') == 'ticket' ) {
+                return view('admin.ticket.shortcut', ['rowId' => $request->input('id')]);
+            }
+        }
+    }
+
+    public function shortcut_api()
+    {
+        $shortcuts = Config::where('meta_key', 'shortcuts')->first();
+        $values = [];
+        foreach ( json_decode($shortcuts->meta_value) as $text) {
+            $values[] = ['text' => $text];
+        }
+        return response()->json([
+            'code' => 0,
+            'msg' => '',
+            'count' => count($values),
+            'data' => $values,
+        ]);
     }
 
     /**

@@ -22,4 +22,9 @@ class Config extends Model
         'created_at',
         'updated_at'
     ];
+
+    public const SHORTCUT = 'shortcut.viewAny';
+    public const LOG = 'log.viewAny';
+    public const IPWHITELIST = 'whitelist.viewAny';
+    public const ANNOUNCEMENT = 'announcement.viewAny';
 }

@@ -51,9 +51,9 @@ class PermissionSeeder extends Seeder
             ['pid' => 24, 'title' => 'ticket.pending', 'icon' => 'fa fa-flag-checkered', 'href' => route('ticket.pending'), 'level' => 1, 'action' => 'tickets.viewPending', 'created_at' => now()],
             ['pid' => 24, 'title' => 'ticket.audited', 'icon' => 'fa fa-check', 'href' => route('ticket.audited'), 'level' => 1, 'action' => 'tickets.viewAudited', 'created_at' => now()],
             ['pid' => 24, 'title' => 'ticket.chart', 'icon' => 'fa fa-bar-chart', 'href' => route('ticket.chart'), 'level' => 1, 'action' => 'tickets.viewChart', 'created_at' => now()],
-            ['pid' => 24, 'title' => 'ticket.accept', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
-            ['pid' => 24, 'title' => 'ticket.reject', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
-            ['pid' => 24, 'title' => 'ticket.shortcut', 'icon' => 'fa fa-reply-all', 'href' => route('home.shortcut'), 'level' => 1, 'action' => 'tickets.shortcut', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'ticket.accepted', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'ticket.rejected', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'ticket.shortcut', 'icon' => 'fa fa-reply-all', 'href' => route('home.shortcut'), 'level' => 1, 'action' => 'shortcut.viewAny', 'created_at' => now()],
             // *----*
             ['pid' => 1, 'title' => 'system', 'icon' => 'fa fa-cogs', 'href' => '', 'level' => 0, 'action' => 'menu.system', 'created_at' => now()],
             // *----*----*

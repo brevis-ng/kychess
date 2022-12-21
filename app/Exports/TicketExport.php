@@ -44,6 +44,6 @@ class TicketExport implements FromQuery
             ->when($this->submit_end, function ($query) {
                 return $query->whereDate('created_at', '<=', $this->submit_end);
             })
-            ->orderBy('id', 'desc');
+            ->orderBy('id', 'desc')->dump();
     }
 }

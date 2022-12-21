@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Role;
-use App\Models\Ticket;
+use App\Models\Config;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TicketPolicy
+class SystemPolicy
 {
     use HandlesAuthorization;
 
@@ -19,26 +18,17 @@ class TicketPolicy
      */
     public function viewAny(User $user)
     {
-        if ( $user->role_id ) {
-            $user_has_permissions = [];
-
-            $permissions = Role::find($user->role_id)->permissions;
-            foreach ( $permissions as $permission ) {
-                $user_has_permissions[] = $permission['action'];
-            }
-
-            return in_array(Ticket::VIEWPENDING, $user_has_permissions);
-        }
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\Config  $config
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Ticket $ticket)
+    public function view(User $user, Config $config)
     {
         //
     }
@@ -58,31 +48,22 @@ class TicketPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket|null  $ticket
+     * @param  \App\Models\Config  $config
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Ticket $ticket = null)
+    public function update(User $user, Config $config)
     {
-        if ( $user->role_id ) {
-            $user_has_permissions = [];
-
-            $permissions = Role::find($user->role_id)->permissions;
-            foreach ( $permissions as $permission ) {
-                $user_has_permissions[] = $permission['action'];
-            }
-
-            return in_array(Ticket::UPDATE, $user_has_permissions);
-        }
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\Config  $config
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Ticket $ticket)
+    public function delete(User $user, Config $config)
     {
         //
     }
@@ -91,10 +72,10 @@ class TicketPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\Config  $config
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Ticket $ticket)
+    public function restore(User $user, Config $config)
     {
         //
     }
@@ -103,10 +84,10 @@ class TicketPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Ticket  $ticket
+     * @param  \App\Models\Config  $config
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Ticket $ticket)
+    public function forceDelete(User $user, Config $config)
     {
         //
     }

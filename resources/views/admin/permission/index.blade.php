@@ -56,9 +56,7 @@
                 {field: 'action', width: 180, title: '{{__("home.action")}}', sort: true},
                 {title: '{{__("home.action")}}', minWidth: 50, toolbar: '#currentTableBar', align: "center"}
             ]],
-            limits: [10, 20, 30],
-            limit: 30,
-            page: false,
+            limit: 100,
         });
 
         /**

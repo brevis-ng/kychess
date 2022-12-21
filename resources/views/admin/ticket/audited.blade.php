@@ -33,8 +33,6 @@
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-sm" id="exportBtn" lay-event="export"> {{ __('home.export.title') }} </button>
-                <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="accept-all"> {{ __('home.accept.all') }} </button>
-                <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="reject-all"> {{ __('home.reject.all') }} </button>
                 <div class="layui-inline" style="font-size: 14px;display: none;" id="exportStatus"></div>
             </div>
         </script>
@@ -43,8 +41,11 @@
 
         <script type="text/html" id="currentTableBar">
             @can('update', App\Models\Ticket::class)
-            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="accept">{{ __('home.ticket.accepted') }}</a>
+            @{{# if(d.status == 'accepted') { }}
             <a class="layui-btn layui-btn-xs layui-btn-danger" lay-event="reject">{{ __('home.ticket.rejected') }}</a>
+            @{{#  } else if(d.status == 'rejected') { }}
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="accept">{{ __('home.ticket.accepted') }}</a>
+            @{{#  } }}
             @endcan
         </script>
 
@@ -63,9 +64,6 @@
         <script type="text/html" id="formTpl">
             <a href="javascript:;" id="@{{d.id}}" style="color:blue" lay-event="showData">{{ __('home.click_detail') }}</a>
         </script>
-        <script type="text/html" id="shortcutTpl">
-            <a href="javascript:;" class=""  style="color:blue" lay-event="showShortcut">{{ __('home.shortcut.view') }}</a>
-        </script>
     </div>
 </div>
 <script>
@@ -77,7 +75,7 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '{{ route("ticket.pending") . "?type=menu" }}',
+            url: '{{ route("ticket.audited") . "?type=menu" }}',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -94,9 +92,8 @@
                 {field: 'created_at', width: 170, title: '{{__("home.created_at")}}'},
                 {field: 'bonus', width: 110, title: '{{__("home.ticket.bonus")}}', edit:true},
                 {field: 'feedback', width: 350, title: '{{__("home.ticket.feedback")}}', edit: true},
-                {field: '', width: 120, title: '{{ __("home.ticket.shortcut") }}', templet:'#shortcutTpl'},
-                {field: 'status', width: 100, title: '{{__("home.status")}}', templet: '#statusTpl'},
-                {title: '{{__("home.action")}}', minWidth: 180, toolbar: '#currentTableBar', align: "center"}
+                {field: 'status', width: 150, title: '{{__("home.status")}}', templet: '#statusTpl', sort: true},
+                {title: '{{__("home.action")}}', minWidth: 80, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [20, 50, 100],
             limit: 20,
@@ -123,71 +120,7 @@
 
         // toolbar事件监听
         table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'accept-all') {  // 监听删除操作
-                var checkStatus = table.checkStatus('currentTableId');
-                var data = checkStatus.data;
-                var ids = [];
-                for(var i=0; i<data.length; i++) {
-                    ids.push(data[i]['id'])
-                }
-                layer.confirm(
-                    "{{ __('home.accept.confirm') }}",
-                    {title: "{{__('home.info')}}", btn: ["{{__('home.yes')}}", "{{__('home.cancel')}}"]},
-                    function (index) {
-                        $.ajax({
-                            type: "PUT",
-                            url: "{{ route('ticket.accept')}}",
-                            data: {ids: ids},
-                            dataType: "json",
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token(); }}'
-                            },
-                            success: function (response) {
-                                if ( response.code == 200 ) {
-                                    layer.msg(response.msg, {icon: 6, time: 3000})
-                                    layer.close(index)
-                                    location.reload();
-                                } else {
-                                    layer.msg(response.msg, {icon: 5, shift: 6, time: 2000});
-                                }
-                            }
-                        });
-                        layer.close(index);
-                    }
-                );
-            } else if (obj.event === 'reject-all') {
-                var checkStatus = table.checkStatus('currentTableId');
-                var data = checkStatus.data;
-                var ids = [];
-                for(var i=0; i<data.length; i++) {
-                    ids.push(data[i]['id'])
-                }
-                layer.confirm(
-                    "{{ __('home.reject.confirm') }}",
-                    {title: "{{__('home.info')}}", btn: ["{{__('home.yes')}}", "{{__('home.cancel')}}"]},
-                    function (index) {
-                        $.ajax({
-                            type: "PUT",
-                            url: "{{ route('ticket.reject')}}",
-                            data: {ids: ids},
-                            dataType: "json",
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token(); }}'
-                            },
-                            success: function (response) {
-                                if ( response.code == 200 ) {
-                                    layer.msg(response.msg, {icon: 6, time: 3000})
-                                    layer.close(index)
-                                    location.reload();
-                                } else {
-                                    layer.msg(response.msg, {icon: 5, shift: 6, time: 2000});
-                                }
-                            }
-                        });
-                        layer.close(index);
-                    }
-                );
-            } else if (obj.event === 'export') {
+            if (obj.event === 'export') {
                 var content = miniPage.getHrefContent("{{ route('ticket.export', ['type' => 'options']) }}");
                 var index = layer.open({
                     title: "{{ __('home.export.title') }}",
@@ -220,11 +153,11 @@
                 },
                 success: function (response) {
                     if (response.code == 200) {
-                        table.reload('currentTableId');
                         layer.msg(response.msg, {icon:6, time:2000});
                     } else {
                         layer.msg(response.msg, {icon:5, time:2000});
                     }
+                    table.reload('currentTableId');
                     layer.close(parentIndex);
                 }
             });

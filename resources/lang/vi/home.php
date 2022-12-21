@@ -78,7 +78,7 @@ return [
         'bonus' => 'Tiền thưởng',
         'feedback' => 'Trả lời',
         'username' => 'Tài khoản',
-        'data' => 'Thông tin đơn',
+        'data' => 'Thông tin',
         'ip' => 'Địa chỉ IP',
         'activity' => 'Hoạt động',
     ],
@@ -137,6 +137,7 @@ return [
         'confirm' => 'Bạn có chắc muốn chấp nhận tất cả?',
         'ok' => 'Cập nhật thành công',
         'no' => 'Cập nhật thất bại',
+        'done' => 'Đã chấp thuận',
     ],
     'reject' => [
         'all' => 'Từ chối tất cả',
@@ -144,6 +145,7 @@ return [
         'confirm' => 'Bạn có chắc muốn từ chối tất cả?',
         'ok' => 'Cập nhật thành công',
         'no' => 'Cập nhật thất bại',
+        'done' => 'Đã từ chối',
     ],
     'save' => 'Lưu thay đổi',
     'created_at' => 'Thời gian tạo',
@@ -165,5 +167,9 @@ return [
     'retry' => 'Thử lại',
     'sort' => 'Sắp xếp',
     'click_detail' => 'Xem chi tiết',
+    'shortcut' => [
+        'select' => 'Chọn',
+        'view' => 'Xem mẫu câu',
+    ],
 
 ];

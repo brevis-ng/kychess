@@ -135,12 +135,14 @@ return [
         'confirm' => '确定派送吗？',
         'ok' => '派送成功',
         'no' => '派送失败',
+        'done' => '已通过',
     ],
     'reject' => [
         'all' => '批量驳回',
         'confirm' => '确定驳回吗？',
         'ok' => '驳回成功',
         'no' => '驳回失败',
+        'done' => '未通过',
     ],
     'save' => '确认保存',
     'created_at' => '创建时间',
@@ -162,5 +164,9 @@ return [
     'retry' => '重试',
     'sort' => '排序',
     'click_detail' => '点击查看',
+    'shortcut' => [
+        'select' => '确定',
+        'view' => '查看快捷',
+    ],
 
 ];
