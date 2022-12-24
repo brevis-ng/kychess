@@ -71,7 +71,6 @@ return [
         'chart' => 'Thống kê',
         'edit' => 'Cập nhật đơn',
         'destroy' => 'Xoá đơn',
-        'shortcut' => 'Trả lời nhanh',
         'pending' => 'Chờ xử lý',
         'accepted' => 'Chấp thuận',
         'rejected' => 'Từ chối',
@@ -81,6 +80,17 @@ return [
         'data' => 'Thông tin',
         'ip' => 'Địa chỉ IP',
         'activity' => 'Hoạt động',
+    ],
+    'reply' => [
+        'create' => 'Thêm mẫu câu',
+        'content' => 'Nội dung',
+        'choose' => 'Chọn',
+        'view' => 'Xem mẫu câu',
+        'destroy' => 'Xoá mẫu câu',
+        'update' => 'Sửa mẫu câu',
+        'edit' => 'Sửa mẫu câu',
+        'setting' => 'Trả lời nhanh',
+        'reply' => 'Trả lời nhanh',
     ],
     'status' => 'Trạng thái',
     'active' => 'Kích hoạt',
@@ -153,8 +163,16 @@ return [
     'not_selected' => 'Bạn chưa chọn mục nào.',
     'system' => 'Hệ thống',
     'log' => 'Nhật ký',
-    'whitelist' => 'IP Hợp pháp',
-    'announcement' => 'Thông báo',
+    'whitelist' => [
+        'set' => 'IP Hợp pháp',
+        'tip' => 'Phân tách bằng dấu phẩy ","',
+        'placeholder' => 'Nhập vào danh sách IP hợp pháp có quyền truy cập trang quản lý',
+    ],
+    'announcement' => [
+        'set' => 'Thông báo',
+        'placeholder' => 'Nhập vào thông báo hiển thị ở trang hoạt động',
+        'label' => 'Nội dung thông báo',
+    ],
     'open' => 'Mở',
     'close' => 'Tắt',
     'upload' => [
@@ -167,9 +185,5 @@ return [
     'retry' => 'Thử lại',
     'sort' => 'Sắp xếp',
     'click_detail' => 'Xem chi tiết',
-    'shortcut' => [
-        'select' => 'Chọn',
-        'view' => 'Xem mẫu câu',
-    ],
 
 ];

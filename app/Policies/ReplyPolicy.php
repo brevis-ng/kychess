@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\Config;
+use App\Models\Reply;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SystemPolicy
+class ReplyPolicy
 {
     use HandlesAuthorization;
 
@@ -19,17 +19,26 @@ class SystemPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Reply::VIEWANY, $user_has_permissions);
+        }
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Config $config)
+    public function view(User $user, Reply $reply)
     {
         //
     }
@@ -50,7 +59,7 @@ class SystemPolicy
                 $user_has_permissions[] = $permission['action'];
             }
 
-            return in_array(Config::SHORTCUT, $user_has_permissions);
+            return in_array(Reply::UPDATE, $user_has_permissions);
         }
     }
 
@@ -58,10 +67,10 @@ class SystemPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Config $config = null)
+    public function update(User $user, Reply $reply = null)
     {
         if ( $user->role_id ) {
             $user_has_permissions = [];
@@ -71,7 +80,7 @@ class SystemPolicy
                 $user_has_permissions[] = $permission['action'];
             }
 
-            return in_array(Config::SHORTCUT, $user_has_permissions);
+            return in_array(Reply::UPDATE, $user_has_permissions);
         }
     }
 
@@ -79,22 +88,31 @@ class SystemPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Config $config)
+    public function delete(User $user, Reply $reply = null)
     {
-        //
+        if ( $user->role_id ) {
+            $user_has_permissions = [];
+
+            $permissions = Role::find($user->role_id)->permissions;
+            foreach ( $permissions as $permission ) {
+                $user_has_permissions[] = $permission['action'];
+            }
+
+            return in_array(Reply::DESTROY, $user_has_permissions);
+        }
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Config $config)
+    public function restore(User $user, Reply $reply)
     {
         //
     }
@@ -103,10 +121,10 @@ class SystemPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Config  $config
+     * @param  \App\Models\Reply  $reply
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Config $config)
+    public function forceDelete(User $user, Reply $reply)
     {
         //
     }

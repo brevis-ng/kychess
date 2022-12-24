@@ -229,14 +229,14 @@
                 }});
             } else if (obj.event === 'showShortcut') {
                 var index = layer.open({
-                    title: "{{ __('home.ticket.shortcut') }}",
+                    title: "{{ __('home.reply.reply') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['60%', '60%'],
                     offset: 'auto',
-                    content: miniPage.getHrefContent("{{ route('home.shortcut') }}?action=ticket&id=" + data.id),
+                    content: miniPage.getHrefContent("{{ route('reply.show', ['reply' => 'id']) }}".replace('id', data.id)),
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

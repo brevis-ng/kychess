@@ -18,7 +18,7 @@ class WhiteListIpAddress
     public function handle(Request $request, Closure $next)
     {
         // @brevis-ng: Retrieving IP whitelist from DB
-        $config = DB::table('configs')->where('meta_key', '=', 'ip_whitelist')->first(['meta_value']);
+        $config = DB::table('configs')->where('meta_key', '=', 'ip_whitelist')->first();
         $ips_whitelist = explode(',', $config->meta_value);
 
         if ( ! in_array($request->ip(), $ips_whitelist) ) {

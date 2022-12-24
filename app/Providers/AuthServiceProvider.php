@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Activity;
+use App\Models\Config;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Ticket;
@@ -11,6 +12,7 @@ use App\Policies\ActivityPolicy;
 use App\Policies\AdminPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\RolePolicy;
+use App\Policies\SystemPolicy;
 use App\Policies\TicketPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -27,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Permission::class => PermissionPolicy::class,
         Activity::class => ActivityPolicy::class,
         Ticket::class => TicketPolicy::class,
+        Config::class => SystemPolicy::class,
     ];
 
     /**

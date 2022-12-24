@@ -85,7 +85,7 @@ class TicketController extends Controller
             
             $tickets = Ticket::where($where)
                 ->with(['activity'])
-                ->orderBy("created_at", "desc")
+                ->orderBy("updated_at", "desc")
                 ->paginate($per_page, ["*"], "page", $current_page)
                 ->toArray();
 
@@ -180,15 +180,7 @@ class TicketController extends Controller
         }
 
         if ( $request->filled('id') ) {
-            if ( $request->has('message') ) {
-                $ticket = Ticket::find($request->input('id'));
-                if ( $ticket == null ) {
-                    return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);
-                }
-                $ticket->feedback = $request->input('message');
-                $ticket->save();
-                return response()->json(['code' => 200, 'msg' => trans('home.edit.ok')]);
-            } elseif ( $request->has(['field', 'value']) ) {
+            if ( $request->has(['field', 'value']) ) {
                 $ticket = Ticket::find($request->input('id'));
                 if ( $ticket == null ) {
                     return response()->json(['code' => 400, 'msg' => trans('home.edit.no')]);

@@ -64,7 +64,7 @@
             <a href="javascript:;" id="@{{d.id}}" style="color:blue" lay-event="showData">{{ __('home.click_detail') }}</a>
         </script>
         <script type="text/html" id="shortcutTpl">
-            <a href="javascript:;" class=""  style="color:blue" lay-event="showShortcut">{{ __('home.shortcut.view') }}</a>
+            <a href="javascript:;" class=""  style="color:blue" lay-event="showShortcut">{{ __('home.reply.view') }}</a>
         </script>
     </div>
 </div>
@@ -94,7 +94,7 @@
                 {field: 'created_at', width: 170, title: '{{__("home.created_at")}}'},
                 {field: 'bonus', width: 110, title: '{{__("home.ticket.bonus")}}', edit:true},
                 {field: 'feedback', width: 350, title: '{{__("home.ticket.feedback")}}', edit: true},
-                {field: '', width: 120, title: '{{ __("home.ticket.shortcut") }}', templet:'#shortcutTpl'},
+                {field: '', width: 120, title: '{{ __("home.reply.setting") }}', templet:'#shortcutTpl'},
                 {field: 'status', width: 100, title: '{{__("home.status")}}', templet: '#statusTpl'},
                 {title: '{{__("home.action")}}', minWidth: 180, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -296,14 +296,14 @@
                 }});
             } else if (obj.event === 'showShortcut') {
                 var index = layer.open({
-                    title: "{{ __('home.ticket.shortcut') }}",
+                    title: "{{ __('home.reply.reply') }}",
                     type: 1,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['60%', '60%'],
                     offset: 'auto',
-                    content: miniPage.getHrefContent("{{ route('home.shortcut') }}?action=ticket&id=" + data.id),
+                    content: miniPage.getHrefContent("{{ route('reply.show', ['reply' => 'id']) }}".replace('id', data.id)),
                 });
                 $(window).on("resize", function () {
                     layer.full(index);

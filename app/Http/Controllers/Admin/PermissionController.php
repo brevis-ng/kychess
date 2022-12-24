@@ -17,7 +17,7 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request  $request)
+    public function index(Request $request)
     {
         if ( $request->user()->cannot('viewAny', Permission::class) ) {
             return view('admin.403', ['message' => trans('home.cannot', ['permission' => trans('home.permission.show')])]);

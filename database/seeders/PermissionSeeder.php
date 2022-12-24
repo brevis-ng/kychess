@@ -53,13 +53,16 @@ class PermissionSeeder extends Seeder
             ['pid' => 24, 'title' => 'ticket.chart', 'icon' => 'fa fa-bar-chart', 'href' => route('ticket.chart'), 'level' => 1, 'action' => 'tickets.viewChart', 'created_at' => now()],
             ['pid' => 24, 'title' => 'ticket.accepted', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
             ['pid' => 24, 'title' => 'ticket.rejected', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'tickets.update', 'created_at' => now()],
-            ['pid' => 24, 'title' => 'ticket.shortcut', 'icon' => 'fa fa-reply-all', 'href' => route('home.shortcut'), 'level' => 1, 'action' => 'shortcut.viewAny', 'created_at' => now()],
+            ['pid' => 24, 'title' => 'reply.setting', 'icon' => 'fa fa-reply-all', 'href' => route('reply.index'), 'level' => 1, 'action' => 'reply.viewAny', 'created_at' => now()],
             // *----*
             ['pid' => 1, 'title' => 'system', 'icon' => 'fa fa-cogs', 'href' => '', 'level' => 0, 'action' => 'menu.system', 'created_at' => now()],
             // *----*----*
-            ['pid' => 31, 'title' => 'log', 'icon' => 'fa fa-code-fork', 'href' => route('home.log'), 'level' => 1, 'action' => 'log.viewAny', 'created_at' => now()],
-            ['pid' => 31, 'title' => 'whitelist', 'icon' => 'fa fa-shield', 'href' => route('home.whitelist'), 'level' => 1, 'action' => 'whitelist.viewAny', 'created_at' => now()],
-            ['pid' => 31, 'title' => 'announcement', 'icon' => 'fa fa-bullhorn', 'href' => route('home.announcement'), 'level' => 1, 'action' => 'announcement.viewAny', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'reply.create', 'icon' => 'fa fa-plus', 'href' => '', 'level' => 2, 'action' => 'reply.create', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'reply.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'reply.update', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'reply.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'reply.destroy', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'log', 'icon' => 'fa fa-code-fork', 'href' => route('system.log'), 'level' => 1, 'action' => 'log.full', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'whitelist.set', 'icon' => 'fa fa-shield', 'href' => route('system.whitelist'), 'level' => 1, 'action' => 'whitelist.full', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'announcement.set', 'icon' => 'fa fa-bullhorn', 'href' => route('system.announcement'), 'level' => 1, 'action' => 'announcement.full', 'created_at' => now()],
         ]);
     }
 }

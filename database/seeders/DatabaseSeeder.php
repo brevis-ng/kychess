@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             ConfigSeeder::class,
+            ReplySeeder::class,
         ]);
 
         \App\Models\Activity::factory()

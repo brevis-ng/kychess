@@ -71,7 +71,6 @@ return [
         'chart' => '数据统计',
         'edit' => '申请更新',
         'destroy' => '申请删除',
-        'shortcut' => '快捷设置',
         'pending' => '待审核',
         'accepted' => '通过',
         'rejected' => '驳回',
@@ -81,6 +80,17 @@ return [
         'data' => '申请信息',
         'ip' => '申请ip',
         'activity' => '活动名称',
+    ],
+    'reply' => [
+        'create' => '添加快捷',
+        'content' => '回复内容',
+        'choose' => '确定',
+        'view' => '查看快捷',
+        'destroy' => '快捷删除',
+        'update' => '快捷编辑',
+        'edit' => '快捷编辑',
+        'setting' => '快捷设置',
+        'reply' => '快捷回复',
     ],
     'status' => '状态',
     'active' => '启用',
@@ -150,8 +160,17 @@ return [
     'not_selected' => '您还没有选择任何内容。',
     'system' => '系统设置',
     'log' => ' 操作日记',
-    'whitelist' => 'IP白名单',
     'announcement' => '公告设置',
+    'whitelist' => [
+        'set' => 'IP白名单',
+        'tip' => '被逗号隔开“，”',
+        'placeholder' => '输入有权访问后台管理页面的IP白名单列表',
+    ],
+    'announcement' => [
+        'set' => '公告设置',
+        'placeholder' => '输入公告内容',
+        'label' => '公告内容',
+    ],
     'open' => '开启',
     'close' => '关闭',
     'upload' => [
@@ -164,9 +183,5 @@ return [
     'retry' => '重试',
     'sort' => '排序',
     'click_detail' => '点击查看',
-    'shortcut' => [
-        'select' => '确定',
-        'view' => '查看快捷',
-    ],
 
 ];

@@ -2,7 +2,7 @@
     <div class="layuimini-main">
         <table class="layui-hide" id="shortcutTable" lay-filter="shortcutTableFilter"></table>
         <script type="text/html" id="shortcutTableBar">
-            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="chooseShortcut">{{ __('home.shortcut.select') }}</a>
+            <a class="layui-btn layui-btn-xs layui-btn-normal" lay-event="chooseShortcut">{{ __('home.reply.choose') }}</a>
         </script>
     </div>
 </div>
@@ -15,9 +15,9 @@
         var parentIndex = layer.index;
         table.render({
             elem: '#shortcutTable',
-            url: '{{ route("home.get-shortcut") }}',
+            url: '{{ route("reply.show", ["reply" => $ticket_id]) }}?type=table',
             cols: [[
-                {field: 'text', title: '{{__("home.ticket.shortcut")}}'},
+                {field: 'content', title: '{{__("home.reply.content")}}'},
                 {title: '{{__("home.action")}}', width: 100, toolbar: '#shortcutTableBar', align: "center"}
             ]],
             page: false,
@@ -30,10 +30,7 @@
                 $.ajax({
                     type: "PUT",
                     url: "{{ route('ticket.update') }}",
-                    data: {
-                        'id': '{{ $rowId }}',
-                        'message': data.text,
-                    },
+                    data: {'id': '{{ $ticket_id }}', 'field': 'feedback', 'value': data.content},
                     dataType: "json",
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token(); }}'

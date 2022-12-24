@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Admin\ReplyController;
+use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\TicketController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
@@ -41,12 +43,13 @@ Route::group([
             Route::resource('roles', RoleController::class);
             Route::resource('permissions', PermissionController::class);
             Route::resource('activity', ActivityController::class);
+            Route::resource('reply', ReplyController::class);
 
-            Route::match(['get', 'put'], 'log', [HomeController::class, 'log'])->name('home.log');
-            Route::match(['get', 'put'], 'whitelist', [HomeController::class, 'whitelist'])->name('home.whitelist');
-            Route::match(['get', 'put'], 'announcement', [HomeController::class, 'announcement'])->name('home.announcement');
-            Route::match(['get', 'put'], 'shortcut', [HomeController::class, 'shortcut'])->name('home.shortcut');
-            Route::get('get-shortcut', [HomeController::class, 'shortcut_api'])->name('home.get-shortcut');
+            Route::controller(SystemController::class)->as('system.')->group(function () {
+                Route::get('log', 'log')->name('log');
+                Route::match(['get', 'put'], 'whitelist', 'whitelist')->name('whitelist');
+                Route::match(['get', 'put'], 'announcement', 'announcement')->name('announcement');
+            });
 
             Route::controller(TicketController::class)
                 ->prefix('tickets')
