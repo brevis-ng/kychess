@@ -2,12 +2,13 @@
 
 namespace App\Providers;
 
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
-use \App\Events\OnChanged;
 use App\Events\OnMenuChanged;
+use App\Listeners\LoginFired;
+use App\Listeners\LogoutFired;
+use App\Listeners\MenuFired;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Auth\Events\Logout;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -17,19 +18,14 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        // @brevis-ng: Logging activity
-        OnChanged::class => [
-            \App\Listeners\LogActivity::class
+        Login::class => [
+            LoginFired::class,
         ],
-
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-        \Illuminate\Auth\Events\Login::class => [
-            \App\Listeners\LoginFired::class
+        Logout::class => [
+            LogoutFired::class,
         ],
         OnMenuChanged::class => [
-            \App\Listeners\MenuFired::class
+            MenuFired::class,
         ]
     ];
 

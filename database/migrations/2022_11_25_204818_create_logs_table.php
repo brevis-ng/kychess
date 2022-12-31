@@ -19,16 +19,13 @@ class CreateLogsTable extends Migration
             $table->collation = 'utf8mb4_unicode_ci';
 
             $table->id();
-            $table->string('operator')->default('系统')->comment('操作人');
-            $table->string('method', 10)->nullable()->comment('HTTP请求方法');
-            $table->string('type')->default('一般的')->comment('事件类型');
-            $table->ipAddress('ip')->nullable();
-            $table->text('description')->nullable()->comment('描述');
+            $table->foreignId('user_id')->comment('操作人');
+            $table->morphs('logable');
+            $table->longText('new_data');
+            $table->longText('old_data');
+            $table->string('type')->nullable();
+            $table->string('state')->nullable();
             $table->timestamps();
-
-            $table->index('operator');  // @brevis-ng: Add index to operator
-
-            $table->dropColumn('updated_at');  // @brevis-ng: Drop one of timestamps column
         });
     }
 

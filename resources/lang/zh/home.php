@@ -159,7 +159,15 @@ return [
     'updated_at' => '更新时间',
     'not_selected' => '您还没有选择任何内容。',
     'system' => '系统设置',
-    'log' => ' 操作日记',
+    'log' => [
+        'log' => '操作日记',
+        'admin' => '操作人',
+        'type' => '操作类型',
+        'model' => '模型',
+        'id' => '模型ID',
+        'old_data' => '以前数据',
+        'new_data' => '改后数据',
+    ],
     'announcement' => '公告设置',
     'whitelist' => [
         'set' => 'IP白名单',

@@ -117,9 +117,12 @@ class TicketController extends Controller
         if ( $request->filled('ids') ) {
             $ids = $request->input('ids');
 
-            $count = Ticket::where('status', '<>', Ticket::ACCEPTED)
-                ->whereIn('id', $ids)
-                ->update(['status' => Ticket::ACCEPTED]);
+            $count = 0;
+            foreach ( $ids as $id ) {
+                $ticket = Ticket::find($id);
+                $ticket->status = Ticket::ACCEPTED;
+                $count = $ticket->save() ? $count + 1 : $count;
+            }
             
             if ( $count == 0 ) {
                 return response()->json(['code' => 400, 'msg' => trans('home.accept.no')]);
@@ -147,9 +150,12 @@ class TicketController extends Controller
         if ( $request->filled('ids') ) {
             $ids = $request->input('ids');
 
-            $count = Ticket::where('status', '<>', Ticket::REJECTED)
-                ->whereIn('id', $ids)
-                ->update(['status' => Ticket::REJECTED]);
+            $count = 0;
+            foreach ( $ids as $id ) {
+                $ticket = Ticket::find($id);
+                $ticket->status = Ticket::REJECTED;
+                $count = $ticket->save() ? $count + 1 : $count;
+            }
             
             if ( $count == 0 ) {
                 return response()->json(['code' => 400, 'msg' => trans('home.reject.no')]);

@@ -162,7 +162,15 @@ return [
     'updated_at' => 'Thời gian sửa',
     'not_selected' => 'Bạn chưa chọn mục nào.',
     'system' => 'Hệ thống',
-    'log' => 'Nhật ký',
+    'log' => [
+        'log' => 'Nhật ký',
+        'admin' => 'Admin',
+        'type' => 'Loại hành động',
+        'model' => 'Mô hình',
+        'id' => 'ID mô hình',
+        'old_data' => 'Trước',
+        'new_data' => 'Sau',
+    ],
     'whitelist' => [
         'set' => 'IP Hợp pháp',
         'tip' => 'Phân tách bằng dấu phẩy ","',
