@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\Activity::factory()
-            ->count(10)
+            ->count(20)
             ->state(
                 new Sequence(
                     ["repeatable" => true],
@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
                     ]
                 )
             )
-            ->has(\App\Models\Ticket::factory()->count(200), "tickets")
+            ->has(\App\Models\Ticket::factory()->count(2000), "tickets")
             ->create();
     }
 }

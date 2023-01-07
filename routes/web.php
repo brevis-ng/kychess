@@ -47,6 +47,7 @@ Route::group([
 
             Route::controller(SystemController::class)->as('system.')->group(function () {
                 Route::get('log', 'log')->name('log');
+                Route::get('showlog/{id}', 'show_log')->name('show-log');
                 Route::match(['get', 'put'], 'whitelist', 'whitelist')->name('whitelist');
                 Route::match(['get', 'put'], 'announcement', 'announcement')->name('announcement');
             });

@@ -20,6 +20,7 @@ class TicketFactory extends Factory
             'ip_address' => $this->faker->ipv4(),
             'status' => $this->faker->randomElement(['pending', 'accepted', 'rejected']),
             'handler_id' => 1,
+            'created_at' => $this->faker->dateTimeBetween('-1 week', 'now'),
         ];
     }
 }

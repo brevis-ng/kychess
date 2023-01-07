@@ -80,6 +80,10 @@ return [
         'data' => '申请信息',
         'ip' => '申请ip',
         'activity' => '活动名称',
+        'total' => '申请单总数',
+        'all_accepted' => '已通过申请单总数',
+        'all_rejected' => '未通过申请单总数',
+        'all_bonus' => '赠送总金额',
     ],
     'reply' => [
         'create' => '添加快捷',
@@ -167,6 +171,7 @@ return [
         'id' => '模型ID',
         'old_data' => '以前数据',
         'new_data' => '改后数据',
+        'show' => '详细',
     ],
     'announcement' => '公告设置',
     'whitelist' => [
@@ -191,5 +196,15 @@ return [
     'retry' => '重试',
     'sort' => '排序',
     'click_detail' => '点击查看',
+    'dashboard' => [
+        'systeminfo' => '系统信息',
+        'domain' => '服务器域名',
+        'port' => '服务器端口',
+        'engine' => '解译引擎',
+        'os' => '服务器版本',
+        'php' => 'PHP版本',
+        'laravel' => 'Laravel版本',
+        'max_upload' => '最大上传限制',
+    ],
 
 ];

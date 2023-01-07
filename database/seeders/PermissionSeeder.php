@@ -60,7 +60,7 @@ class PermissionSeeder extends Seeder
             ['pid' => 31, 'title' => 'reply.create', 'icon' => 'fa fa-plus', 'href' => '', 'level' => 2, 'action' => 'reply.create', 'created_at' => now()],
             ['pid' => 31, 'title' => 'reply.edit', 'icon' => 'fa fa-pencil', 'href' => '', 'level' => 2, 'action' => 'reply.update', 'created_at' => now()],
             ['pid' => 31, 'title' => 'reply.destroy', 'icon' => 'fa fa-trash', 'href' => '', 'level' => 2, 'action' => 'reply.destroy', 'created_at' => now()],
-            ['pid' => 31, 'title' => 'log', 'icon' => 'fa fa-code-fork', 'href' => route('system.log'), 'level' => 1, 'action' => 'log.full', 'created_at' => now()],
+            ['pid' => 31, 'title' => 'log.log', 'icon' => 'fa fa-code-fork', 'href' => route('system.log'), 'level' => 1, 'action' => 'log.full', 'created_at' => now()],
             ['pid' => 31, 'title' => 'whitelist.set', 'icon' => 'fa fa-shield', 'href' => route('system.whitelist'), 'level' => 1, 'action' => 'whitelist.full', 'created_at' => now()],
             ['pid' => 31, 'title' => 'announcement.set', 'icon' => 'fa fa-bullhorn', 'href' => route('system.announcement'), 'level' => 1, 'action' => 'announcement.full', 'created_at' => now()],
         ]);

@@ -53,7 +53,7 @@
                     <span class="triangle"></span>
                 </div>
             </div>
-            <h2 class="h1">{{ $message }}</h2>
+            <h2 class="h1">{{ $message ?? "Not allowed" }}</h2>
         </div>
     </div>
 </div>

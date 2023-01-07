@@ -80,6 +80,10 @@ return [
         'data' => 'Thông tin',
         'ip' => 'Địa chỉ IP',
         'activity' => 'Hoạt động',
+        'total' => 'Tổng số đơn đăng ký',
+        'all_accepted' => 'Tổng số đơn được chấp nhận',
+        'all_rejected' => 'Tổng số đơn bị từ chối',
+        'all_bonus' => 'Tổng số tiền phát thưởng',
     ],
     'reply' => [
         'create' => 'Thêm mẫu câu',
@@ -170,6 +174,7 @@ return [
         'id' => 'ID mô hình',
         'old_data' => 'Trước',
         'new_data' => 'Sau',
+        'show' => 'Chi tiết',
     ],
     'whitelist' => [
         'set' => 'IP Hợp pháp',
@@ -193,5 +198,15 @@ return [
     'retry' => 'Thử lại',
     'sort' => 'Sắp xếp',
     'click_detail' => 'Xem chi tiết',
+    'dashboard' => [
+        'systeminfo' => 'Thông tin hệ thống',
+        'domain' => 'Tên miền',
+        'port' => 'Cổng',
+        'engine' => 'Engine',
+        'os' => 'Hệ điều hành',
+        'php' => 'Phiên bản PHP',
+        'laravel' => 'Phiên bản Laravel',
+        'max_upload' => 'Tải lên tối đa',
+    ],
 
 ];

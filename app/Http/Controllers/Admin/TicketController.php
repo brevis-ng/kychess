@@ -38,7 +38,7 @@ class TicketController extends Controller
                     $where[] = ["activity_id", $params["activity_id"]];
                 }
             }
-            
+
             $tickets = Ticket::where($where)
                 ->with(['activity'])
                 ->orderBy("created_at", "desc")
@@ -82,7 +82,7 @@ class TicketController extends Controller
                     $where[] = ["activity_id", $params["activity_id"]];
                 }
             }
-            
+
             $tickets = Ticket::where($where)
                 ->with(['activity'])
                 ->orderBy("updated_at", "desc")
@@ -123,7 +123,7 @@ class TicketController extends Controller
                 $ticket->status = Ticket::ACCEPTED;
                 $count = $ticket->save() ? $count + 1 : $count;
             }
-            
+
             if ( $count == 0 ) {
                 return response()->json(['code' => 400, 'msg' => trans('home.accept.no')]);
             } else {
@@ -156,7 +156,7 @@ class TicketController extends Controller
                 $ticket->status = Ticket::REJECTED;
                 $count = $ticket->save() ? $count + 1 : $count;
             }
-            
+
             if ( $count == 0 ) {
                 return response()->json(['code' => 400, 'msg' => trans('home.reject.no')]);
             } else {
@@ -168,9 +168,15 @@ class TicketController extends Controller
         }
     }
 
+    public function chart()
+    {
+
+        return view('admin.ticket.chart');
+    }
+
     /**
      * Update the ticket
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -233,11 +239,11 @@ class TicketController extends Controller
             $submit_end = $request->input('submit-end');
         }
         $file_name = config('app.name') . date('YmdHis') . '.xlsx';
-        
+
         $batch = Bus::batch([
             new TicketExportJob($file_name, $status, $submit_start, $submit_end)
             ])->dispatch();
-            
+
         Cache::forever($batch->id, $file_name);
         return response()->json([
             'code' => 200,
@@ -250,7 +256,7 @@ class TicketController extends Controller
 
     /**
      * Update export status.
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      */
     public function updateExportProgress(Request $request)
@@ -284,7 +290,7 @@ class TicketController extends Controller
 
     /**
      * Download export file
-     * 
+     *
      * @param  \Illuminate\Http\Request  $request
      */
     public function downloadExport(Request $request)
