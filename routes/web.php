@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\ReplyController;
 use App\Http\Controllers\Admin\SystemController;
 use App\Http\Controllers\Admin\TicketController;
+use App\Http\Controllers\Client\ApplyController;
 use Illuminate\Support\Facades\Route;
 use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 
@@ -78,6 +79,4 @@ Route::group([
 });
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [ApplyController::class, 'index'])->name('client.index');
